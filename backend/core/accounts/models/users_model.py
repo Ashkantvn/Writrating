@@ -10,7 +10,7 @@ class CustomUser(AbstractBaseUser,PermissionsMixin):
     is_validator = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
     is_staff =  models.BooleanField(default=False)
-    updated_date = models.DateField(auto_now=False, auto_now_add=True)
+    updated_date = models.DateField(auto_now=True, auto_now_add=False)
     created_date = models.DateField(auto_now=False, auto_now_add=True)
 
     USERNAME_FIELD = "email"
@@ -20,6 +20,11 @@ class CustomUser(AbstractBaseUser,PermissionsMixin):
 
     class Meta:
         verbose_name = 'user'
+
+        permissions=[
+            ('validate_data',"can validate data and report it"),
+            ('content_management',"can manage content of site(only owner's data)")
+        ]
 
     def __str__(self):
         return self.email
