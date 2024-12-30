@@ -1,7 +1,7 @@
 # Writrating 
 **Writrating** is a comprehensive, open-source platform for tech enthusiasts to review, compare, and stay informed about the latest digital devices.
 
-![Device discovery](/docs/img/logo/logo-img.png)
+![Device discovery](/docs/img/logo/logo.png)
 
 ## Project Goals
 - **Create Reliable Data**: Ensure the accuracy and reliability of all data presented on the platform.
