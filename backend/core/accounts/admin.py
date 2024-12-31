@@ -1,9 +1,8 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
-from accounts.models import CustomUser
+from accounts.models import CustomUser, Profile
 from accounts.forms import CustomUserCreationForm
 
-# Admin actions
+# Admin actions for users
 def change_is_activate_to_false(modeladmin, request, queryset):
     queryset.update(status=False)
     change_is_activate_to_false.short_description = "Change activate to false"
@@ -44,3 +43,11 @@ class CustomUserAdmin(admin.ModelAdmin):
     ordering = ("email",)
 
     actions= (change_is_activate_to_false,change_is_activate_to_true,change_is_admin_to_false,change_is_admin_to_true,change_is_validator_to_false,change_is_validator_to_true)
+
+
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    model = Profile
+
+    def has_delete_permission(self, request, obj = ...):
+        return False

@@ -16,3 +16,12 @@ black
 djangorestframework
 markdown
 django-filter
+
+
+# file management
+pillow
+django-cleanup
+
+
+# settings
+python-decouple
