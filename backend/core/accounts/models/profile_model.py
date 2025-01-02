@@ -23,7 +23,8 @@ class Profile(models.Model):
             super().save(*args, **kwargs) 
             self.username = f"user{self.pk}" 
             super().save(update_fields=['username']) 
-        else: 
+        else:
+            self.username = f"user{self.pk}" 
             super().save(*args, **kwargs)
     
     def delete(self, *args, **kwargs): 
