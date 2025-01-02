@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from accounts.models.profile_model import Profile
+from accounts.models.recovery_code_model import RecoveryCode
 
 
 class TestAccountModels(TestCase):
@@ -68,5 +69,14 @@ class TestAccountModels(TestCase):
         self.assertEqual(user.profile.description,"")
         self.assertIsNotNone(user.profile.updated_date)
         self.assertIsNotNone(user.profile.created_date)
+
+
+    # test for create recovery code
+    def test_create_password_recovery_code(self):
+        user = self.User.objects.create_user(email="test@test.com",password="adjfoij@#$542234EWRw")
+        recovery_code = RecoveryCode.objects.create(user=user,digits=1234)
+        self.assertIsInstance(recovery_code.user,self.User)
+        self.assertIsNotNone(recovery_code.digits)
+        self.assertIsNotNone(recovery_code.created_date)
 
 
