@@ -46,7 +46,9 @@ INSTALLED_APPS = [
     "user_interactions",
     # third-party apps
     'django_cleanup.apps.CleanupConfig',
+    'drf_yasg'
 ]
+
 
 
 MIDDLEWARE = [

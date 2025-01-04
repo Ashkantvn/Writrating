@@ -23,5 +23,10 @@ pillow
 django-cleanup
 
 
-# settings
+# settings env file
 python-decouple
+
+
+
+# drm documentation
+drf-yasg[validation]
