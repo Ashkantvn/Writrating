@@ -37,12 +37,22 @@ class CustomUserAdmin(admin.ModelAdmin):
     list_display = ('email',"is_admin","is_validator","is_active","is_superuser","last_login","updated_date","created_date",)
     list_filter = ('email',"is_admin","is_validator","is_active","is_superuser","last_login","created_date")
 
-    fieldsets = ( (None, {'fields': ('email', 'password1', 'password2')}),)
+    fieldsets = ( 
+        ("General information", {'fields': ('email', 'password1', 'password2')}),
+        ("Roles and Permissions", {'fields': ('groups',)}),
+        )
 
     search_fields = ("email",)
     ordering = ("email",)
 
-    actions= (change_is_activate_to_false,change_is_activate_to_true,change_is_admin_to_false,change_is_admin_to_true,change_is_validator_to_false,change_is_validator_to_true)
+    actions= (
+        change_is_activate_to_false,
+        change_is_activate_to_true,
+        change_is_admin_to_false,
+        change_is_admin_to_true,
+        change_is_validator_to_false,
+        change_is_validator_to_true,
+        )
 
 
 @admin.register(Profile)
