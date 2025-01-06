@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 class Profile(models.Model):
-    username = models.CharField(max_length=50,unique=True,blank=True)
+    username = models.CharField(max_length=50,unique=True)
     first_name = models.CharField(max_length=256,blank=True)
     last_name = models.CharField(max_length=256,blank=True)
     profile_image = models.ImageField(upload_to="images/",default="images/Default.jpg",blank=True)
