@@ -1,6 +1,6 @@
 from django.test import SimpleTestCase
 from django.urls import reverse,resolve
-from accounts import views
+from accounts.api.v1 import views
 
 class TestAccountsUrls(SimpleTestCase):
     def test_profile_is_resolve(self):

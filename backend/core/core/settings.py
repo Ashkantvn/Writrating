@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "reviews",
     "user_interactions",
     # third-party apps
+    "rest_framework",
     'django_cleanup.apps.CleanupConfig',
     'drf_yasg'
 ]
