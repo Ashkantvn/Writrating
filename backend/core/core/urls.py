@@ -43,7 +43,7 @@ urlpatterns = [
     re_path(r"^static/(?P<path>.*)$", serve,{'document_root' : settings.STATIC_ROOT}),
 
     path("admin/", admin.site.urls),
-    path('api/v1/accounts',include('accounts.urls')),
+    path('api/v1/accounts/',include('accounts.urls')),
 
     # swagger urls
     path('swagger<format>/', schema_view.without_ui(cache_timeout=0), name='schema-json'),

@@ -61,3 +61,6 @@ class ProfileAdmin(admin.ModelAdmin):
 
     def has_delete_permission(self, request, obj = ...):
         return False
+    
+    def has_add_permission(self, request):
+        return False
