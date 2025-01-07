@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 
 User = get_user_model()
 
@@ -18,14 +19,22 @@ class Profile(models.Model):
             return f"{self.username}'s profile"
         return f"{self.pk}"
     
+    def clean(self):
+        invalid_chars = set('!@#$%^&*()+=[]{}|\\:;"\'<>,.?/')
+        if ' ' in self.username: 
+            raise ValidationError("Username should not contain spaces")
+        if any(char in invalid_chars for char in self.username):
+            raise ValidationError("Username contains invalid characters")
+    
     def save(self, *args, **kwargs): 
         if not self.pk: 
             super().save(*args, **kwargs) 
             self.username = f"user{self.pk}" 
             super().save(update_fields=['username']) 
         else:
-            self.username = f"user{self.pk}" 
             super().save(*args, **kwargs)
+
     
     def delete(self, *args, **kwargs): 
         raise Exception("Profile cannot be deleted directly. Delete the associated user instead.")
+        
