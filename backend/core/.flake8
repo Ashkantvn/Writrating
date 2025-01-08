@@ -10,7 +10,9 @@ exclude=
     __pycache__,
     settings.py,
     __init__.py,
-    test_*.py,
     celery.py,
     migrations,
     apps.py
+
+ignore = 
+    F811
