@@ -1,4 +1,5 @@
 [flake8]
+max-line-length = 90
 
 exclude=
     .git,
@@ -10,4 +11,6 @@ exclude=
     settings.py,
     __init__.py,
     test_*.py,
-    celery.py
+    celery.py,
+    migrations,
+    apps.py

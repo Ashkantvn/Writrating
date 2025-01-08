@@ -1,6 +1,5 @@
 from rest_framework.permissions import BasePermission, SAFE_METHODS
 from accounts.api.v1.exceptions import CustomAuthenticationFailed
-from rest_framework import status
 
 
 class CustomIsAuthenticatedOrReadOnly(BasePermission):
@@ -8,6 +7,6 @@ class CustomIsAuthenticatedOrReadOnly(BasePermission):
         if request.method in SAFE_METHODS:
             return True
         elif not request.user or not request.user.is_authenticated:
-            raise  CustomAuthenticationFailed()
+            raise CustomAuthenticationFailed()
         else:
             return True
