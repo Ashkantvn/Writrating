@@ -75,7 +75,7 @@ class TestAccountAPI:
         assert response.status_code == 200
         assert response.data["username"] == "newtest"
 
-    # Sign-up test
+    # Sign-up tests
     # Test for post data to server and register new user
     def test_POST_sign_up_api_response_200(self):
         client = APIClient()
