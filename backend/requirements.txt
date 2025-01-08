@@ -18,6 +18,11 @@ markdown
 django-filter
 
 
+# drm authentications
+djangorestframework-simplejwt
+
+
+
 # file management
 pillow
 django-cleanup
