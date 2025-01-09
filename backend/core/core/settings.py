@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "user_interactions",
     # third-party apps
     "rest_framework",
+    # 'rest_framework_simplejwt.token_blacklist',
     'django_cleanup.apps.CleanupConfig',
     'drf_yasg'
 ]
@@ -143,4 +144,16 @@ MEDIA_ROOT= os.path.join(BASE_DIR,'media')
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
+
 AUTH_USER_MODEL = "accounts.CustomUser"
+
+
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': (
+#         'rest_framework_simplejwt.authentication.JWTAuthentication',
+#     )
+# }
+
+# SIMPLE_JWT = {
+#     'AUTH_HEADER_TYPE':('Bearer',),
+# }

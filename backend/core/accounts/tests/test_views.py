@@ -77,7 +77,7 @@ class TestAccountAPI:
 
     # Sign-up tests
     # Test for post data to server and register new user
-    def test_POST_sign_up_api_response_200(self):
+    def test_POST_sign_up_api_response_201(self):
         client = APIClient()
         url = reverse("accounts:signup")
         response = client.post(
@@ -88,7 +88,7 @@ class TestAccountAPI:
                 "password_confirm": "wcofn@#!@#1234",
             },
         )
-        assert response.status_code == 200
+        assert response.status_code == 201
 
     def test_POST_sign_up_api_response_400(self):
         client = APIClient()

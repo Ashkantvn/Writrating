@@ -1,9 +1,10 @@
-from accounts.api.v1.serializers import ProfileSerializer
+from accounts.api.v1.serializers import ProfileSerializer, SignUpSerializer
+from accounts.api.v1.permissions import CustomIsAuthenticatedOrReadOnly
+from rest_framework_simplejwt.tokens import RefreshToken
 from accounts.models.profile_model import Profile
 from rest_framework.response import Response
-from rest_framework import status, generics, mixins
+from rest_framework import status, generics, mixins,permissions
 from django.shortcuts import get_object_or_404
-from accounts.api.v1.permissions import CustomIsAuthenticatedOrReadOnly
 
 
 # Create your views here.
@@ -33,8 +34,25 @@ class ProfileAPI(
         return self.partial_update(request=request, *args, **kwargs)
 
 
-class SignUpAPI(generics.GenericAPIView):
-    pass
+class SignUpAPI(generics.GenericAPIView,mixins.CreateModelMixin):    
+    """
+    Sign-up api let users signup to website.
+    Methods: POST
+    """
+    permission_classes = [permissions.AllowAny]
+    serializer_class = SignUpSerializer
+
+    def post(self,request,*args,**kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        refresh_token = RefreshToken.for_user(user)
+        response_data = {
+            "user":serializer.data["email"],
+            "token_access": str(refresh_token.access_token),
+            "refresh_token": str(refresh_token)
+        }
+        return Response(response_data,status=status.HTTP_201_CREATED)
 
 
 class LoginAPI(generics.GenericAPIView):

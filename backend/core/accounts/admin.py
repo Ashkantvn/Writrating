@@ -77,13 +77,16 @@ class CustomUserAdmin(admin.ModelAdmin):
         change_is_validator_to_true,
     )
 
+    def has_delete_permission(self, request, obj = ...):
+        return True
+
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
     model = Profile
 
     def has_delete_permission(self, request, obj=...):
-        return False
+        return True
 
     def has_add_permission(self, request):
         return False
