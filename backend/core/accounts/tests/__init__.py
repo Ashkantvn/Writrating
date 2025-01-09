@@ -1,3 +1,5 @@
 from .test_models import TestAccountModels
 from .test_urls import TestAccountsUrls
-from .test_views import TestAccountAPI
+from .test_login_api import TestAccountLoginAPI
+from .test_profile_api import TestAccountProfileAPI
+from .test_sign_up_api import TestAccountSignUpAPI

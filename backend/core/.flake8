@@ -1,7 +1,10 @@
 [flake8]
 max-line-length = 90
 
-exclude=
+per-file-ignores =
+    test_*.py: F401
+
+exclude =
     .git,
     .gitignore,
     venv,
