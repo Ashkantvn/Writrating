@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 from decouple import config  # type: ignore
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,10 +22,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG',default=True,cast=bool)
+DEBUG = config("DEBUG", default=True, cast=bool)
 
 ALLOWED_HOSTS = []
 
@@ -47,10 +48,9 @@ INSTALLED_APPS = [
     # third-party apps
     "rest_framework",
     # 'rest_framework_simplejwt.token_blacklist',
-    'django_cleanup.apps.CleanupConfig',
-    'drf_yasg'
+    "django_cleanup.apps.CleanupConfig",
+    "drf_yasg",
 ]
-
 
 
 MIDDLEWARE = [
@@ -130,19 +130,18 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "static/"
-STATIC_ROOT = os.path.join(BASE_DIR,"static")
-STATICFILES_DIRS = [os.path.join(BASE_DIR,"staticfiles")]
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "staticfiles")]
 
 
 # media root
-MEDIA_URL= "/media/"
-MEDIA_ROOT= os.path.join(BASE_DIR,'media')
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
 
 
 AUTH_USER_MODEL = "accounts.CustomUser"

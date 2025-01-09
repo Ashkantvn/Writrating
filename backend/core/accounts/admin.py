@@ -77,7 +77,7 @@ class CustomUserAdmin(admin.ModelAdmin):
         change_is_validator_to_true,
     )
 
-    def has_delete_permission(self, request, obj = ...):
+    def has_delete_permission(self, request, obj=...):
         return True
 
 

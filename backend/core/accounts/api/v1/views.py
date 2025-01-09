@@ -3,7 +3,7 @@ from accounts.api.v1.permissions import CustomIsAuthenticatedOrReadOnly
 from rest_framework_simplejwt.tokens import RefreshToken
 from accounts.models.profile_model import Profile
 from rest_framework.response import Response
-from rest_framework import status, generics, mixins,permissions
+from rest_framework import status, generics, mixins, permissions
 from django.shortcuts import get_object_or_404
 
 
@@ -34,25 +34,26 @@ class ProfileAPI(
         return self.partial_update(request=request, *args, **kwargs)
 
 
-class SignUpAPI(generics.GenericAPIView,mixins.CreateModelMixin):    
+class SignUpAPI(generics.GenericAPIView, mixins.CreateModelMixin):
     """
     Sign-up api let users signup to website.
     Methods: POST
     """
+
     permission_classes = [permissions.AllowAny]
     serializer_class = SignUpSerializer
 
-    def post(self,request,*args,**kwargs):
+    def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         refresh_token = RefreshToken.for_user(user)
         response_data = {
-            "user":serializer.data["email"],
+            "user": serializer.data["email"],
             "token_access": str(refresh_token.access_token),
-            "refresh_token": str(refresh_token)
+            "refresh_token": str(refresh_token),
         }
-        return Response(response_data,status=status.HTTP_201_CREATED)
+        return Response(response_data, status=status.HTTP_201_CREATED)
 
 
 class LoginAPI(generics.GenericAPIView):

@@ -93,8 +93,7 @@ class TestAccountAPI:
     def test_POST_sign_up_api_response_400(self):
         client = APIClient()
         url = reverse("accounts:signup")
-        # Post data with different passwords
-        response = client.post(
+        response = client.post(  # Post data with different passwords
             url,
             data={
                 "email": "test@test.com",
@@ -104,8 +103,7 @@ class TestAccountAPI:
         )
         assert response.status_code == 400
 
-        # Post data with invalid email
-        response = client.post(
+        response = client.post(  # Post data with invalid email
             url,
             data={
                 "email": "test",
