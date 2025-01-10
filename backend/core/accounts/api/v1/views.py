@@ -54,12 +54,7 @@ class SignUpAPI(generics.GenericAPIView, mixins.CreateModelMixin):
             "refresh_token": str(refresh_token),
         }
         return Response(response_data, status=status.HTTP_201_CREATED)
-
-
-class LoginAPI(generics.GenericAPIView):
-    pass
-
-
+    
 class LogoutAPI(generics.GenericAPIView):
     pass
 
