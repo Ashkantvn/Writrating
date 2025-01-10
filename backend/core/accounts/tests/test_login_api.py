@@ -21,10 +21,19 @@ class TestAccountLoginAPI:
         url = reverse("accounts:login")
         response = client.post(
             url,
-            data={"email": "test", "password": "saodfh@#123WWE"},  # Send invalid email
+            data={"password": "saodfh@#123WWE"},  # Send empty email field
         )
         assert response.status_code == 400
 
+        response = client.post(
+            url,
+            data={"email": "test10001@test.com"},  # Send empty password field
+        )
+        assert response.status_code == 400
+
+    def test_POST_login_user_401(self,fake_user):
+        client= APIClient()
+        url = reverse("accounts:login")
         response = client.post(
             url,
             data={  # Send different password
@@ -32,4 +41,4 @@ class TestAccountLoginAPI:
                 "password": "saodfh@#",
             },
         )
-        assert response.status_code == 400
+        assert response.status_code == 401
