@@ -1,6 +1,7 @@
 import pytest
 from rest_framework.test import APIClient
 from django.contrib.auth import get_user_model
+from rest_framework_simplejwt.tokens import RefreshToken
 
 
 User = get_user_model()
@@ -28,6 +29,11 @@ def authenticated_client():
         user=user,
     )
     client.force_login(user=user)
+    refreshToken = RefreshToken.for_user(user=user)
+    accessToken = str(refreshToken.access_token)
+    refreshToken = str(refreshToken)
     client.user = user
+    client.access_token = accessToken
+    client.refresh_token = refreshToken
     yield client
     user.delete()
