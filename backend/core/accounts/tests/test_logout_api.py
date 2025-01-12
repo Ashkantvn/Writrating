@@ -41,15 +41,20 @@ class TestAccountLogoutAPI:
     def test_POST_logout_user_400(self,authenticated_client):
         url = reverse("accounts:logout")
 
-        response = authenticated_client.post(url) 
+        response = authenticated_client.post(url,data={
+            "access_token": "",
+            "refresh_token": ""
+        }) 
         assert response.status_code == 400
 
         response = authenticated_client.post(url,data={
-            "access_token":"token"
+            "access_token":"token",
+            "refresh_token":""
         })
         assert response.status_code == 400
 
         response = authenticated_client.post(url,data={
+            "access_token":"",
             "refresh_token":"token"
         })
         assert response.status_code == 400

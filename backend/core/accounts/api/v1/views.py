@@ -1,6 +1,6 @@
 from accounts.api.v1.serializers import ProfileSerializer, SignUpSerializer
-from accounts.api.v1.permissions import CustomIsAuthenticatedOrReadOnly
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
+from rest_framework_simplejwt.exceptions import TokenError
 from accounts.models.profile_model import Profile
 from rest_framework.response import Response
 from rest_framework import status, generics, mixins, permissions
@@ -16,7 +16,7 @@ class ProfileAPI(
     Methods: GET , PATCH
     """
 
-    permission_classes = [CustomIsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     serializer_class = ProfileSerializer
     queryset = Profile.objects.all()
     lookup_field = "username"
@@ -26,7 +26,7 @@ class ProfileAPI(
 
     def patch(self, request, username, format=None, *args, **kwargs):
         profile = get_object_or_404(Profile, username=username)
-        if profile.user.email != request.user.email:
+        if profile.user.pk != request.user.id:
             return Response(
                 data={"detail": "You can only change your profile"},
                 status=status.HTTP_403_FORBIDDEN,
@@ -56,7 +56,33 @@ class SignUpAPI(generics.GenericAPIView, mixins.CreateModelMixin):
         return Response(response_data, status=status.HTTP_201_CREATED)
     
 class LogoutAPI(generics.GenericAPIView):
-    pass
+    """
+    Log out API let users logout from their accounts
+    Methods: POST
+    """
+    permission_classes = [permissions.IsAuthenticated,]
+
+    def post(self,request, *args, **kwargs):
+        try:
+            refresh_token = request.data["refresh_token"]
+            access_token = request.data["access_token"]
+
+            refresh_token = RefreshToken(refresh_token)
+            refresh_user_id = refresh_token.payload.get("user_id")
+
+            access_token = AccessToken(access_token)
+            access_user_id = access_token.payload.get("user_id")
+
+            if refresh_user_id != access_user_id:
+                return Response({"detail":"Access token and refresh token do not refer to the same user."},status=status.HTTP_403_FORBIDDEN)
+            
+            if request.user.id != refresh_user_id or request.user.id != access_user_id:
+                return Response({"detail":"This token does not belong to you"},status=status.HTTP_403_FORBIDDEN)
+            
+            return Response(status=status.HTTP_204_NO_CONTENT)
+            
+        except TokenError:
+            return Response(data={"detail":"Token error"},status=status.HTTP_400_BAD_REQUEST)
 
 
 class DeleteAccountAPI(generics.GenericAPIView):

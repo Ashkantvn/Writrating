@@ -22,6 +22,11 @@ from django.views.static import serve
 from core.permissions import IsSuperUser
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+from rest_framework.authentication import SessionAuthentication
+
+class CsrfExemptSessionAuthentication(SessionAuthentication): 
+    def enforce_csrf(self, request): 
+        return
 
 
 schema_view = get_schema_view(
@@ -34,13 +39,17 @@ schema_view = get_schema_view(
     ),
     public=False,
     permission_classes=(IsSuperUser,),
+    authentication_classes=[CsrfExemptSessionAuthentication]
 )
 
 
 urlpatterns = [
+    # media and static urls
     re_path(r"^media/(?P<path>.*)$", serve, {"document_root": settings.MEDIA_ROOT}),
     re_path(r"^static/(?P<path>.*)$", serve, {"document_root": settings.STATIC_ROOT}),
+    # admin urls
     path("admin/", admin.site.urls),
+    # apps urls
     path("api/v1/accounts/", include("accounts.urls")),
     # swagger urls
     path(
