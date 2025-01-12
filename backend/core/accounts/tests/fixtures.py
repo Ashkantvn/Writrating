@@ -11,9 +11,7 @@ User = get_user_model()
 @pytest.fixture
 def fake_user():
     user = User.objects.create_user(
-        email="test10001@test.com", 
-        password="saodfh@#123WWE",
-        is_active=True
+        email="test10001@test.com", password="saodfh@#123WWE", is_active=True
     )
     yield user
     user.delete()

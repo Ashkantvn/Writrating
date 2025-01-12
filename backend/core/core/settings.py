@@ -47,8 +47,8 @@ INSTALLED_APPS = [
     "user_interactions",
     # third-party apps
     "rest_framework",
-    'rest_framework_simplejwt',
-    'rest_framework_simplejwt.token_blacklist',
+    "rest_framework_simplejwt",
+    "rest_framework_simplejwt.token_blacklist",
     "django_cleanup.apps.CleanupConfig",
     "drf_yasg",
 ]
@@ -149,12 +149,12 @@ AUTH_USER_MODEL = "accounts.CustomUser"
 
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     )
 }
 
 SIMPLE_JWT = {
-    'AUTH_HEADER_TYPES':('Bearer',),
-    'BLACKLIST_AFTER_ROTATION': True,
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "BLACKLIST_AFTER_ROTATION": True,
 }

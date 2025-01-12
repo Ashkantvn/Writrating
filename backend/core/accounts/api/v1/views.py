@@ -57,15 +57,19 @@ class SignUpAPI(generics.GenericAPIView, mixins.CreateModelMixin):
             "refresh_token": str(refresh_token),
         }
         return Response(response_data, status=status.HTTP_201_CREATED)
-    
+
+
 class LogoutAPI(APIView):
     """
     Log out API let users logout from their accounts
     Methods: POST
     """
-    permission_classes = [permissions.IsAuthenticated,]
 
-    def post(self,request, *args, **kwargs):
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
+
+    def post(self, request, *args, **kwargs):
         try:
             refresh_token = request.data["refresh_token"]
             access_token = request.data["access_token"]
@@ -77,17 +81,27 @@ class LogoutAPI(APIView):
             access_user_id = access_token.payload.get("user_id")
 
             if refresh_user_id != access_user_id:
-                return Response({"detail":"Access token and refresh token do not refer to the same user."},status=status.HTTP_403_FORBIDDEN)
-            
+                return Response(
+                    {
+                        "detail": "User mismatch for tokens."
+                    },
+                    status=status.HTTP_403_FORBIDDEN,
+                )
+
             if request.user.id != refresh_user_id or request.user.id != access_user_id:
-                return Response({"detail":"This token does not belong to you"},status=status.HTTP_403_FORBIDDEN)
-            
+                return Response(
+                    {"detail": "This token does not belong to you"},
+                    status=status.HTTP_403_FORBIDDEN,
+                )
+
             refresh_token.blacklist()
-            
+
             return Response(status=status.HTTP_204_NO_CONTENT)
-            
+
         except TokenError:
-            return Response(data={"detail":"Token error"},status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                data={"detail": "Token error"}, status=status.HTTP_400_BAD_REQUEST
+            )
 
 
 class DeleteAccountAPI(generics.GenericAPIView):

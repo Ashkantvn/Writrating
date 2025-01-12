@@ -8,7 +8,11 @@ urlpatterns = [
     path("profile/<str:username>/", views.ProfileAPI.as_view(), name="profile"),
     path("sign-up/", views.SignUpAPI.as_view(), name="signup"),
     path("login/", simplejwt_views.TokenObtainPairView.as_view(), name="login"),
-    path("token/refresh", simplejwt_views.TokenRefreshView.as_view(), name="token_refresh"),
+    path(
+        "token/refresh",
+        simplejwt_views.TokenRefreshView.as_view(),
+        name="token_refresh",
+    ),
     path("logout/", views.LogoutAPI.as_view(), name="logout"),
     path("delete-account/", views.DeleteAccountAPI.as_view(), name="deleteAccount"),
     path(

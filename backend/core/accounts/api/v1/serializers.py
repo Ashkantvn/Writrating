@@ -4,7 +4,6 @@ from django.contrib.auth import get_user_model
 from django.core.validators import validate_email
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
-from django.contrib.auth import authenticate
 
 User = get_user_model()
 
@@ -57,14 +56,12 @@ class SignUpSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 {"detail": "password and password confirm must match."}
             )
-        
-        try: 
+
+        try:
             validate_password(data["password"])
         except ValidationError as error:
-            raise serializers.ValidationError(detail={
-                "password":list(error.messages)
-            })
-        
+            raise serializers.ValidationError(detail={"password": list(error.messages)})
+
         return data
 
     def create(self, validated_data):

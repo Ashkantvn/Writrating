@@ -31,8 +31,8 @@ class TestAccountLoginAPI:
         )
         assert response.status_code == 400
 
-    def test_POST_login_user_401(self,fake_user):
-        client= APIClient()
+    def test_POST_login_user_401(self, fake_user):
+        client = APIClient()
         url = reverse("accounts:login")
         response = client.post(
             url,
