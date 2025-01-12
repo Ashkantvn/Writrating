@@ -4,3 +4,4 @@ from .test_login_api import TestAccountLoginAPI
 from .test_profile_api import TestAccountProfileAPI
 from .test_sign_up_api import TestAccountSignUpAPI
 from .test_logout_api import TestAccountLogoutAPI
+from .test_delete_account_api import TestDeleteAccountAPI
