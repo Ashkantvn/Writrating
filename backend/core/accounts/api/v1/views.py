@@ -1,9 +1,12 @@
 from accounts.api.v1.serializers import ProfileSerializer, SignUpSerializer
+from accounts.models.profile_model import Profile
+
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 from rest_framework_simplejwt.exceptions import TokenError
-from accounts.models.profile_model import Profile
 from rest_framework.response import Response
 from rest_framework import status, generics, mixins, permissions
+from rest_framework.views import APIView
+
 from django.shortcuts import get_object_or_404
 
 
@@ -55,7 +58,7 @@ class SignUpAPI(generics.GenericAPIView, mixins.CreateModelMixin):
         }
         return Response(response_data, status=status.HTTP_201_CREATED)
     
-class LogoutAPI(generics.GenericAPIView):
+class LogoutAPI(APIView):
     """
     Log out API let users logout from their accounts
     Methods: POST
@@ -78,6 +81,8 @@ class LogoutAPI(generics.GenericAPIView):
             
             if request.user.id != refresh_user_id or request.user.id != access_user_id:
                 return Response({"detail":"This token does not belong to you"},status=status.HTTP_403_FORBIDDEN)
+            
+            refresh_token.blacklist()
             
             return Response(status=status.HTTP_204_NO_CONTENT)
             
