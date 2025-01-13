@@ -104,8 +104,11 @@ class LogoutAPI(APIView):
             )
 
 
-class DeleteAccountAPI(generics.GenericAPIView):
-    pass
+class DeleteAccountAPI(APIView):
+    permission_classes= [permissions.IsAuthenticated]
+
+    def delete(self,request,*args,**kwargs):
+        pass
 
 
 class ChangePassAPI(generics.GenericAPIView):
