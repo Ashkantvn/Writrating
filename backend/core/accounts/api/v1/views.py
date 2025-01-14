@@ -108,7 +108,40 @@ class DeleteAccountAPI(APIView):
     permission_classes= [permissions.IsAuthenticated]
 
     def delete(self,request,*args,**kwargs):
-        pass
+        try:
+            refresh_token = request.data["refresh_token"]
+            access_token = request.data["access_token"]
+
+            refresh_token = RefreshToken(refresh_token)
+            refresh_token_user_id = refresh_token.payload.get("user_id")
+
+            access_token = AccessToken(access_token)
+            access_token_user_id = access_token.payload.get("user_id")
+            
+            if refresh_token_user_id != access_token_user_id:
+                return Response(
+                    data={
+                        "detail": "User mismatch for token"
+                    },
+                    status=status.HTTP_403_FORBIDDEN
+                )
+            
+            if refresh_token_user_id != request.user.id:
+                return Response(
+                    data={
+                        "detail":"This token does not belongs to you."
+                    }
+                )
+            
+            refresh_token.blacklist()
+        
+        except TokenError:
+            return Response(
+                data={
+                    "detail":"TokenError"
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
 
 class ChangePassAPI(generics.GenericAPIView):
