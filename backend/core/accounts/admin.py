@@ -4,34 +4,40 @@ from accounts.forms import CustomUserCreationForm
 
 
 # Admin actions for users
-def change_is_activate_to_false(modeladmin, request, queryset):
-    queryset.update(status=False)
-    change_is_activate_to_false.short_description = "Change activate to false"
+def change_is_active_to_false(modeladmin, request, queryset):
+    queryset.update(is_active=False)
+
+change_is_active_to_false.short_description = "Change activate to false"
 
 
 def change_is_validator_to_false(modeladmin, request, queryset):
-    queryset.update(status=False)
-    change_is_validator_to_false.short_description = "Change validator to false"
+    queryset.update(is_validator=False)
+
+change_is_validator_to_false.short_description = "Change validator to false"
 
 
 def change_is_admin_to_false(modeladmin, request, queryset):
-    queryset.update(status=False)
-    change_is_admin_to_false.short_description = "Change admin to false"
+    queryset.update(is_admin=False)
+
+change_is_admin_to_false.short_description = "Change admin to false"
 
 
-def change_is_activate_to_true(modeladmin, request, queryset):
-    queryset.update(status=True)
-    change_is_activate_to_true.short_description = "Change activate to True"
+def change_is_active_to_true(modeladmin, request, queryset):
+    queryset.update(is_active=True)
+
+change_is_active_to_true.short_description = "Change activate to True"
 
 
 def change_is_validator_to_true(modeladmin, request, queryset):
-    queryset.update(status=True)
-    change_is_validator_to_true.short_description = "Change validator to True"
+    queryset.update(is_validator=True)
+
+change_is_validator_to_true.short_description = "Change validator to True"
 
 
 def change_is_admin_to_true(modeladmin, request, queryset):
-    queryset.update(status=True)
-    change_is_admin_to_true.short_description = "Change admin to True"
+    queryset.update(is_admin=True)
+
+change_is_admin_to_true.short_description = "Change admin to True"
 
 
 # Register your models here.
@@ -69,8 +75,8 @@ class CustomUserAdmin(admin.ModelAdmin):
     ordering = ("email",)
 
     actions = (
-        change_is_activate_to_false,
-        change_is_activate_to_true,
+        change_is_active_to_false,
+        change_is_active_to_true,
         change_is_admin_to_false,
         change_is_admin_to_true,
         change_is_validator_to_false,
