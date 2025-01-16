@@ -15,6 +15,7 @@ urlpatterns = [
     ),
     path("logout/", views.LogoutAPI.as_view(), name="logout"),
     path("delete-account/", views.DeleteAccountAPI.as_view(), name="deleteAccount"),
+    path("change-password/",views.ChangePassAPI.as_view(), name="changePassword"),
     path(
         "password-recovery/",
         views.PasswordRecoveryAPI.as_view(),
