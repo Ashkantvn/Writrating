@@ -10,28 +10,42 @@ User = get_user_model()
 # fixtures
 @pytest.fixture
 def fake_user():
+    email = "test10001@test.com"
+    password = "saodfh@#123WWE"
+
     user = User.objects.create_user(
-        email="test10001@test.com", password="saodfh@#123WWE", is_active=True
+        email=email, password=password, is_active=True
     )
+
+    user.password = password
+
     yield user
     user.delete()
 
 
 @pytest.fixture
 def authenticated_client():
+    email = "test10002@test.com"
+    password = "saodfh@#123WWE"
+    
     client = APIClient()
     user = User.objects.create_user(
-        email="test10002@test.com", password="saodfh@#123WWE"
+        email=email, password= password
     )
     client.force_authenticate(
         user=user,
     )
     client.force_login(user=user)
+
     refreshToken = RefreshToken.for_user(user=user)
     accessToken = str(refreshToken.access_token)
     refreshToken = str(refreshToken)
+
     client.user = user
     client.access_token = accessToken
     client.refresh_token = refreshToken
+    client.password = password
+
     yield client
+
     user.delete()
