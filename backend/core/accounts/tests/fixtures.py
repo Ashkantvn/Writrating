@@ -13,9 +13,7 @@ def fake_user():
     email = "test10001@test.com"
     password = "saodfh@#123WWE"
 
-    user = User.objects.create_user(
-        email=email, password=password, is_active=True
-    )
+    user = User.objects.create_user(email=email, password=password, is_active=True)
 
     user.password = password
 
@@ -27,11 +25,9 @@ def fake_user():
 def authenticated_client():
     email = "test10002@test.com"
     password = "saodfh@#123WWE"
-    
+
     client = APIClient()
-    user = User.objects.create_user(
-        email=email, password= password
-    )
+    user = User.objects.create_user(email=email, password=password)
     client.force_authenticate(
         user=user,
     )

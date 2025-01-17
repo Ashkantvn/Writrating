@@ -7,11 +7,13 @@ from accounts.forms import CustomUserCreationForm
 def change_is_active_to_false(modeladmin, request, queryset):
     queryset.update(is_active=False)
 
+
 change_is_active_to_false.short_description = "Change activate to false"
 
 
 def change_is_validator_to_false(modeladmin, request, queryset):
     queryset.update(is_validator=False)
+
 
 change_is_validator_to_false.short_description = "Change validator to false"
 
@@ -19,11 +21,13 @@ change_is_validator_to_false.short_description = "Change validator to false"
 def change_is_admin_to_false(modeladmin, request, queryset):
     queryset.update(is_admin=False)
 
+
 change_is_admin_to_false.short_description = "Change admin to false"
 
 
 def change_is_active_to_true(modeladmin, request, queryset):
     queryset.update(is_active=True)
+
 
 change_is_active_to_true.short_description = "Change activate to True"
 
@@ -31,11 +35,13 @@ change_is_active_to_true.short_description = "Change activate to True"
 def change_is_validator_to_true(modeladmin, request, queryset):
     queryset.update(is_validator=True)
 
+
 change_is_validator_to_true.short_description = "Change validator to True"
 
 
 def change_is_admin_to_true(modeladmin, request, queryset):
     queryset.update(is_admin=True)
+
 
 change_is_admin_to_true.short_description = "Change admin to True"
 

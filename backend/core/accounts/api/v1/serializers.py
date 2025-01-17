@@ -63,7 +63,7 @@ class SignUpSerializer(serializers.ModelSerializer):
             )
 
         try:
-            validate_password(data["password"],user=user)
+            validate_password(data["password"], user=user)
         except ValidationError as error:
             raise serializers.ValidationError(detail={"password": list(error.messages)})
 
@@ -74,25 +74,27 @@ class SignUpSerializer(serializers.ModelSerializer):
             email=validated_data["email"], password=validated_data["password"]
         )
         return user
-    
+
+
 class ChangePasswordSerializer(serializers.Serializer):
-    old_password= serializers.CharField(write_only=True)
-    new_password= serializers.CharField(write_only=True)
-    new_password_confirm= serializers.CharField(write_only=True)
+    old_password = serializers.CharField(write_only=True)
+    new_password = serializers.CharField(write_only=True)
+    new_password_confirm = serializers.CharField(write_only=True)
 
     def validate(self, data):
-        user = self.context['request'].user
+        user = self.context["request"].user
 
         if not user.check_password(data["old_password"]):
             raise PermissionDeniedException(detail="Incorrect old password. ")
 
         if data["new_password"] != data["new_password_confirm"]:
-            raise PermissionDeniedException(detail="Password and password confirm must match. ")
-        
+            raise PermissionDeniedException(
+                detail="Password and password confirm must match. "
+            )
+
         try:
-            validate_password(data["new_password"],user=user)
-        except ValidationError as error :
-            raise serializers.ValidationError(detail={"detail" :list(error.messages)})
+            validate_password(data["new_password"], user=user)
+        except ValidationError as error:
+            raise serializers.ValidationError(detail={"detail": list(error.messages)})
 
         return data
-        
