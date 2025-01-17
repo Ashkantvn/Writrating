@@ -1,5 +1,8 @@
 from rest_framework import serializers
+
 from accounts.models import Profile
+from accounts.api.v1.exceptions import PermissionDeniedException
+
 from django.contrib.auth import get_user_model
 from django.core.validators import validate_email
 from django.contrib.auth.password_validation import validate_password
@@ -34,7 +37,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 
 class SignUpSerializer(serializers.ModelSerializer):
-    password_confirm = serializers.CharField(write_only=True, max_length=128)
+    password_confirm = serializers.CharField(write_only=True)
 
     class Meta:
         model = User
@@ -52,13 +55,15 @@ class SignUpSerializer(serializers.ModelSerializer):
         return value
 
     def validate(self, data):
+        user = self.context["request"].user
+
         if data["password"] != data["password_confirm"]:
             raise serializers.ValidationError(
                 {"detail": "password and password confirm must match."}
             )
 
         try:
-            validate_password(data["password"])
+            validate_password(data["password"],user=user)
         except ValidationError as error:
             raise serializers.ValidationError(detail={"password": list(error.messages)})
 
@@ -69,3 +74,25 @@ class SignUpSerializer(serializers.ModelSerializer):
             email=validated_data["email"], password=validated_data["password"]
         )
         return user
+    
+class ChangePasswordSerializer(serializers.Serializer):
+    old_password= serializers.CharField(write_only=True)
+    new_password= serializers.CharField(write_only=True)
+    new_password_confirm= serializers.CharField(write_only=True)
+
+    def validate(self, data):
+        user = self.context['request'].user
+
+        if not user.check_password(data["old_password"]):
+            raise PermissionDeniedException(detail="Incorrect old password. ")
+
+        if data["new_password"] != data["new_password_confirm"]:
+            raise PermissionDeniedException(detail="Password and password confirm must match. ")
+        
+        try:
+            validate_password(data["new_password"],user=user)
+        except ValidationError as error :
+            raise serializers.ValidationError(detail={"detail" :list(error.messages)})
+
+        return data
+        

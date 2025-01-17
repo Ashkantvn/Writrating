@@ -1,4 +1,4 @@
-from accounts.api.v1.serializers import ProfileSerializer, SignUpSerializer
+from accounts.api.v1.serializers import ProfileSerializer, SignUpSerializer, ChangePasswordSerializer
 from accounts.models.profile_model import Profile
 
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
@@ -18,8 +18,8 @@ class ProfileAPI(
     generics.GenericAPIView, mixins.RetrieveModelMixin, mixins.UpdateModelMixin
 ):
     """
-    Profile api let users see users profile and edit their profile .
-    Methods: GET , PATCH
+        Profile api let users see users profile and edit their profile .
+        Methods: GET , PATCH
     """
 
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
@@ -42,15 +42,15 @@ class ProfileAPI(
 
 class SignUpAPI(generics.GenericAPIView, mixins.CreateModelMixin):
     """
-    Sign-up api let users signup to website.
-    Methods: POST
+        Sign-up api let users signup to website.
+        Method: POST
     """
 
     permission_classes = [permissions.AllowAny]
     serializer_class = SignUpSerializer
 
     def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
+        serializer = self.get_serializer(data=request.data,context={"request":request})
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         refresh_token = RefreshToken.for_user(user)
@@ -64,8 +64,8 @@ class SignUpAPI(generics.GenericAPIView, mixins.CreateModelMixin):
 
 class LogoutAPI(APIView):
     """
-    Log out API let users logout from their accounts
-    Methods: POST
+        Log out API let users logout from their accounts
+        Method: POST
     """
 
     permission_classes = [
@@ -108,6 +108,10 @@ class LogoutAPI(APIView):
 
 
 class DeleteAccountAPI(APIView):
+    """
+        Delete account API let users delete their accounts
+        Method: DELETE
+    """
     permission_classes= [permissions.IsAuthenticated]
 
     def delete(self,request,*args,**kwargs):
@@ -116,8 +120,24 @@ class DeleteAccountAPI(APIView):
             return Response(status= status.HTTP_204_NO_CONTENT)
 
 
-class ChangePassAPI(generics.GenericAPIView):
-    pass
+class ChangePassAPI(APIView):
+    """
+        Change password API let users change their password
+        Method: PATCH
+    """
+    
+    permission_classes = [permissions.IsAuthenticated,]
+
+    def patch(self,request,*args,**kwargs):
+        serializer = ChangePasswordSerializer(data=request.data,context={"request": request})
+        if serializer.is_valid(raise_exception=True):
+            # Update user's password
+            user = request.user
+            user.set_password(serializer._validated_data["new_password"])
+            user.save()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        
+        return Response(data=serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
 
 class PasswordRecoveryAPI(generics.GenericAPIView):
