@@ -16,6 +16,7 @@ def fake_user():
     user = User.objects.create_user(email=email, password=password, is_active=True)
 
     user.password = password
+    user.email = email
 
     yield user
     user.delete()
