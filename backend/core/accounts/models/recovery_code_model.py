@@ -11,3 +11,6 @@ class RecoveryCode(models.Model):
         validators=[MinValueValidator(1000), MaxValueValidator(9999)]
     )
     created_date = models.DateTimeField(auto_now=False, auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.email} - {self.digits}"

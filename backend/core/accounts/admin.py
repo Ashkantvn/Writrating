@@ -1,5 +1,5 @@
 from django.contrib import admin
-from accounts.models import CustomUser, Profile
+from accounts.models import CustomUser, Profile,RecoveryCode
 from accounts.forms import CustomUserCreationForm
 
 
@@ -102,3 +102,8 @@ class ProfileAdmin(admin.ModelAdmin):
 
     def has_add_permission(self, request):
         return False
+    
+
+@admin.register(RecoveryCode)
+class RecoveryCodeAdmin(admin.ModelAdmin):
+    model = RecoveryCode
