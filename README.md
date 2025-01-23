@@ -1,5 +1,5 @@
 # Writrating 
-**Writrating** is a comprehensive, open-source platform for tech enthusiasts to review, compare, and stay informed about the latest digital devices.
+**Writrating** is a comprehensive platform for tech enthusiasts to review, compare, and stay informed about the latest digital devices.
 
 ![Device discovery](/docs/img/logo/logo.png)
 
