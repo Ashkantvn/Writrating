@@ -5,14 +5,15 @@ from accounts.tests.fixtures import fake_user
 
 @pytest.mark.django_db
 class TestPasswordRecoveryAPI:
-    def test_POST_password_recovery_status_200(self,fake_user):
+    def test_POST_password_recovery_status_201(self,fake_user):
         client =  APIClient()
         url = reverse("accounts:passwordRecovery")
         data = {
             "email": fake_user.email
         }
         response = client.post(url,data=data)
-        assert response.status_code == 200
+        assert response.status_code == 201
+        
 
     def test_POST_password_recovery_status_400(self):
         client =  APIClient()
