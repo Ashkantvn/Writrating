@@ -3,16 +3,21 @@ from accounts.api.v1.serializers import (
     SignUpSerializer,
     ChangePasswordSerializer,
 )
-from accounts.models.profile_model import Profile
+from accounts.api.v1.threads import generate_digits
+from accounts.models import Profile, RecoveryCode
 
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework.response import Response
-from rest_framework import status, generics, mixins, permissions
+from rest_framework import status, generics, mixins, permissions,exceptions
 from rest_framework.views import APIView
 
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
+from django.core.validators import validate_email
+from django.http import Http404
+
+import threading
 
 User = get_user_model()
 
@@ -149,8 +154,27 @@ class ChangePassAPI(APIView):
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class PasswordRecoveryAPI(generics.GenericAPIView):
-    pass
+class PasswordRecoveryAPI(APIView):
+    """
+    Password recovery will send recovery code digits to users
+    Method: POST
+    """
+    permission_classes = [permissions.AllowAny]
+
+    def post(self,request,*args,**kwargs):
+        email = request.data.get("email")
+        try:
+            validate_email(email)
+            user = get_object_or_404(User,email=email)
+            thread = threading.Thread(target=generate_digits,args=(user,))
+            thread.start()
+            return Response(status=status.HTTP_201_CREATED)
+        except exceptions.ValidationError:
+            return Response(data={"detail":"Email validation failed."},status=status.HTTP_400_BAD_REQUEST)
+        except Http404:
+            return Response(data={"detail":"User not found."},status=status.HTTP_404_NOT_FOUND)
+        except Exception as error:
+            return Response(data={"detail":str(error)},status=status.HTTP_400_BAD_REQUEST)
 
 
 class PasswordRecoveryVerificationAPI(generics.GenericAPIView):
