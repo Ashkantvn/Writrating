@@ -166,6 +166,8 @@ class PasswordRecoveryAPI(APIView):
         try:
             validate_email(email)
             user = get_object_or_404(User,email=email)
+            if RecoveryCode.objects.filter(user=user).exists():
+                return Response(data={"detail":"Recovery code already sent."},status=status.HTTP_400_BAD_REQUEST) 
             thread = threading.Thread(target=generate_digits,args=(user,))
             thread.start()
             return Response(status=status.HTTP_201_CREATED)
