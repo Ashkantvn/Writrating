@@ -7,3 +7,4 @@ from .test_logout_api import TestAccountLogoutAPI
 from .test_delete_account_api import TestDeleteAccountAPI
 from .test_change_pass_api import TestChangePassAPI
 from .test_password_recovery_api import TestPasswordRecoveryAPI
+from .test_recovery_digits_validation_api import TestRecoveryDigitsValidationAPI

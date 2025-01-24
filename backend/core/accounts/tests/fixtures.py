@@ -2,6 +2,7 @@ import pytest
 from rest_framework.test import APIClient
 from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.tokens import RefreshToken
+from accounts.models import RecoveryCode
 
 
 User = get_user_model()
@@ -46,3 +47,21 @@ def authenticated_client():
     yield client
 
     user.delete()
+
+
+@pytest.fixture
+def fake_user_with_recovery_digits():
+    email = "test10003@test.com"
+    password = "apowem@#$1234WER"
+
+    user = User.objects.create_user(email=email, password=password, is_active=True)
+    digits = RecoveryCode.objects.create(user=user, recovery_digits="1234")
+
+    user.digits = digits
+    user.email = email
+
+    yield user
+    user.delete()
+    digits.delete()
+
+    
