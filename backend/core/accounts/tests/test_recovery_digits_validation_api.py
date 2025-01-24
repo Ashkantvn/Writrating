@@ -12,7 +12,7 @@ class TestRecoveryDigitsValidationAPI:
         url = reverse('accounts:passwordRecoveryValidation')
         data = {
             "email": fake_user_with_recovery_digits.email,
-            "recovery_digits": fake_user_with_recovery_digits.digits,
+            "digits": fake_user_with_recovery_digits.digits,
             "new_password": "nacdsfoim@#1234WER",
             "new_password_confirm": "nacdsfoim@#1234WER"
         }
@@ -26,12 +26,12 @@ class TestRecoveryDigitsValidationAPI:
         has_recovery_code = RecoveryCode.objects.filter(user=user).exists()
         assert has_recovery_code == False
 
-    def test_POST_test_recovery_digits_validation_403(self,fake_user):
+    def test_POST_test_recovery_digits_validation_403(self,fake_user,fake_user_with_recovery_digits):
         client = APIClient()
         url = reverse('accounts:passwordRecoveryValidation')
         data = {
             "email": fake_user.email,
-            "recovery_digits": "4444",
+            "digits": fake_user_with_recovery_digits.digits,
             "new_password": "woecfhnoij@#$1234WER",
             "new_password_confirm": "woecfhnoij@#$1234WER"
         }
@@ -42,12 +42,15 @@ class TestRecoveryDigitsValidationAPI:
         user.refresh_from_db()
         assert user.check_password("woecfhnoij@#$1234WER") is False
 
+        has_recovery_code = RecoveryCode.objects.filter(user=fake_user_with_recovery_digits).exists()
+        assert has_recovery_code == True
+
     def test_POST_test_recovery_digits_validation_400(self):
         client = APIClient()
         url = reverse('accounts:passwordRecoveryValidation')
         data = {
             "email": "test@test.com",
-            "recovery_digits": "4444565",
+            "digits": 4444565,
             "new_password": "woecfhnoij@#$1234WER",
             "new_password_confirm": "woecfhnoij@#$1234WER"
         }
@@ -56,7 +59,7 @@ class TestRecoveryDigitsValidationAPI:
 
         data = {
             "email": "test",
-            "recovery_digits": "4444",
+            "digits": 4444,
             "new_password": "woecfhnoij@#$1234WER",
             "new_password_confirm": "woecfhnoij@#$1234WER"
         }
@@ -65,7 +68,7 @@ class TestRecoveryDigitsValidationAPI:
 
         data = {
             "email": "test@test.com",
-            "recovery_digits": "4444",
+            "digits": 4444,
             "new_password": "woecfhno$1234WER",
             "new_password_confirm": "woecfhnoij@#$1234WER"
         }

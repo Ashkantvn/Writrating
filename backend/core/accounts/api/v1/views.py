@@ -2,6 +2,7 @@ from accounts.api.v1.serializers import (
     ProfileSerializer,
     SignUpSerializer,
     ChangePasswordSerializer,
+    PasswordRecoveryValidationSerialiaer
 )
 from accounts.api.v1.threads import generate_digits
 from accounts.models import Profile, RecoveryCode
@@ -179,5 +180,35 @@ class PasswordRecoveryAPI(APIView):
             return Response(data={"detail":str(error)},status=status.HTTP_400_BAD_REQUEST)
 
 
-class PasswordRecoveryValidationAPI(generics.GenericAPIView):
-    pass
+class PasswordRecoveryValidationAPI(APIView):
+    """
+    Validate the recovery code and reset the password
+    Method: POST
+    """
+    permission_classes= [permissions.AllowAny]
+    
+    def post(self,request,*args,**kwargs):
+        email = request.data.get("email")
+        digits = request.data.get("digits")
+        new_password = request.data.get("new_password")
+        
+
+        # Check digits blongs to the email
+        if not RecoveryCode.objects.filter(digits=digits).exists():
+            return Response(data={"detail":"Recovery code does not exist."},status=status.HTTP_400_BAD_REQUEST)
+        recovery_code = RecoveryCode.objects.get(digits=digits)
+        if recovery_code.user.email != email:
+            return Response(data={"detail":"Recovery code does not belong to the email."},status=status.HTTP_403_FORBIDDEN)
+
+        serializer = PasswordRecoveryValidationSerialiaer(data=request.data)
+        
+        if serializer.is_valid(raise_exception=True):
+            
+            user = get_object_or_404(User,email=email)
+            user.set_password(new_password)
+            user.save()
+            
+            recovery_code.delete()
+            return Response(data={"message":"Password changed successfully."},status=status.HTTP_200_OK)
+
+        return Response(data=serializer.errors,status=status.HTTP_400_BAD_REQUEST)

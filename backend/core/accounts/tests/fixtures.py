@@ -55,7 +55,7 @@ def fake_user_with_recovery_digits():
     password = "apowem@#$1234WER"
 
     user = User.objects.create_user(email=email, password=password, is_active=True)
-    recovery_code = RecoveryCode.objects.create(user=user, digits="1234")
+    recovery_code = RecoveryCode.objects.create(user=user, digits=1234)
 
     user.digits = recovery_code.digits
     user.email = email
