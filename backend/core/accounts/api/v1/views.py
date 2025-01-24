@@ -179,5 +179,5 @@ class PasswordRecoveryAPI(APIView):
             return Response(data={"detail":str(error)},status=status.HTTP_400_BAD_REQUEST)
 
 
-class PasswordRecoveryVerificationAPI(generics.GenericAPIView):
+class PasswordRecoveryValidationAPI(generics.GenericAPIView):
     pass

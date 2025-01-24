@@ -22,8 +22,8 @@ urlpatterns = [
         name="passwordRecovery",
     ),
     path(
-        "password-recovery/ve/",
-        views.PasswordRecoveryVerificationAPI.as_view(),
-        name="passwordRecoveryVerification",
+        "password-recovery/validation/",
+        views.PasswordRecoveryValidationAPI.as_view(),
+        name="passwordRecoveryValidation",
     ),
 ]

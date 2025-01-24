@@ -34,9 +34,8 @@ class TestAccountsUrls(SimpleTestCase):
 
     def test_sign_up_is_resolve(self):
         url = reverse(
-            "accounts:passwordRecoveryVerification",
-            kwargs={"email": "test@test.com", "code": 123},
+            "accounts:passwordRecoveryValidation",
         )
         self.assertEqual(
-            resolve(url).func.view_class, views.PasswordRecoveryVerificationAPI
+            resolve(url).func.view_class, views.PasswordRecoveryValidationAPI
         )
