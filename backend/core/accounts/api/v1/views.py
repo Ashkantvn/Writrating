@@ -2,7 +2,7 @@ from accounts.api.v1.serializers import (
     ProfileSerializer,
     SignUpSerializer,
     ChangePasswordSerializer,
-    PasswordRecoveryValidationSerialiaer
+    PasswordRecoveryValidationSerialiaer,
 )
 from accounts.api.v1.threads import generate_digits
 from accounts.models import Profile, RecoveryCode
@@ -10,7 +10,7 @@ from accounts.models import Profile, RecoveryCode
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework.response import Response
-from rest_framework import status, generics, mixins, permissions,exceptions
+from rest_framework import status, generics, mixins, permissions, exceptions
 from rest_framework.views import APIView
 
 from django.shortcuts import get_object_or_404
@@ -160,24 +160,38 @@ class PasswordRecoveryAPI(APIView):
     Password recovery will send recovery code digits to users
     Method: POST
     """
+
     permission_classes = [permissions.AllowAny]
 
-    def post(self,request,*args,**kwargs):
+    def post(self, request, *args, **kwargs):
         email = request.data.get("email")
         try:
             validate_email(email)
-            user = get_object_or_404(User,email=email)
+            user = get_object_or_404(User, email=email)
             if RecoveryCode.objects.filter(user=user).exists():
-                return Response(data={"detail":"Recovery code already sent."},status=status.HTTP_400_BAD_REQUEST) 
-            thread = threading.Thread(target=generate_digits,args=(user,))
+                return Response(
+                    data={"detail": "Recovery code already sent."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+            thread = threading.Thread(target=generate_digits, args=(user,))
             thread.start()
-            return Response(data={"message":"We are sending recovery email"},status=status.HTTP_201_CREATED)
+            return Response(
+                data={"message": "We are sending recovery email"},
+                status=status.HTTP_201_CREATED,
+            )
         except exceptions.ValidationError:
-            return Response(data={"detail":"Email validation failed."},status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                data={"detail": "Email validation failed."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         except Http404:
-            return Response(data={"detail":"User not found."},status=status.HTTP_404_NOT_FOUND)
+            return Response(
+                data={"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND
+            )
         except Exception as error:
-            return Response(data={"detail":str(error)},status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                data={"detail": str(error)}, status=status.HTTP_400_BAD_REQUEST
+            )
 
 
 class PasswordRecoveryValidationAPI(APIView):
@@ -185,30 +199,39 @@ class PasswordRecoveryValidationAPI(APIView):
     Validate the recovery code and reset the password
     Method: POST
     """
-    permission_classes= [permissions.AllowAny]
-    
-    def post(self,request,*args,**kwargs):
+
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request, *args, **kwargs):
         email = request.data.get("email")
         digits = request.data.get("digits")
         new_password = request.data.get("new_password")
-        
 
         # Check digits blongs to the email
         if not RecoveryCode.objects.filter(digits=digits).exists():
-            return Response(data={"detail":"Recovery code does not exist."},status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                data={"detail": "Recovery code does not exist."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         recovery_code = RecoveryCode.objects.get(digits=digits)
         if recovery_code.user.email != email:
-            return Response(data={"detail":"Recovery code does not belong to the email."},status=status.HTTP_403_FORBIDDEN)
+            return Response(
+                data={"detail": "Recovery code does not belong to the email."},
+                status=status.HTTP_403_FORBIDDEN,
+            )
 
         serializer = PasswordRecoveryValidationSerialiaer(data=request.data)
-        
+
         if serializer.is_valid(raise_exception=True):
-            
-            user = get_object_or_404(User,email=email)
+
+            user = get_object_or_404(User, email=email)
             user.set_password(new_password)
             user.save()
-            
-            recovery_code.delete()
-            return Response(data={"message":"Password changed successfully."},status=status.HTTP_200_OK)
 
-        return Response(data=serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+            recovery_code.delete()
+            return Response(
+                data={"message": "Password changed successfully."},
+                status=status.HTTP_200_OK,
+            )
+
+        return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)

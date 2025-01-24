@@ -7,7 +7,6 @@ from django.contrib.auth import get_user_model
 from django.core.validators import validate_email
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
-from django.core.validators import MinValueValidator, MaxValueValidator
 from accounts.models import RecoveryCode
 
 User = get_user_model()
@@ -100,7 +99,8 @@ class ChangePasswordSerializer(serializers.Serializer):
             raise serializers.ValidationError(detail={"detail": list(error.messages)})
 
         return data
-    
+
+
 class PasswordRecoveryValidationSerialiaer(serializers.ModelSerializer):
     email = serializers.EmailField(write_only=True)
     new_password = serializers.CharField(write_only=True)
@@ -116,18 +116,16 @@ class PasswordRecoveryValidationSerialiaer(serializers.ModelSerializer):
         except serializers.ValidationError as validationError:
             raise validationError({"detail": "Email validation failed."})
         if not User.objects.filter(email=value).exists():
-            raise serializers.ValidationError(
-                {"detail": "Email address not found"}
-            )
+            raise serializers.ValidationError({"detail": "Email address not found"})
         return value
-    
+
     def validate_new_password(self, value):
         try:
             validate_password(value)
         except serializers.ValidationError as validationError:
             raise validationError({"detail": "Password validation failed."})
         return value
-    
+
     def validate(self, attrs):
         if attrs["new_password"] != attrs["new_password_confirm"]:
             raise serializers.ValidationError(

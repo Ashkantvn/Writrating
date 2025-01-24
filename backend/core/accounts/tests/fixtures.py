@@ -63,5 +63,3 @@ def fake_user_with_recovery_digits():
     yield user
     user.delete()
     recovery_code.delete()
-
-    
