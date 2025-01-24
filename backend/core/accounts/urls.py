@@ -22,7 +22,7 @@ urlpatterns = [
         name="passwordRecovery",
     ),
     path(
-        "password-recovery/<str:email>/<int:code>",
+        "password-recovery/ve/",
         views.PasswordRecoveryVerificationAPI.as_view(),
         name="passwordRecoveryVerification",
     ),
