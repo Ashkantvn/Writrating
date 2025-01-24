@@ -170,7 +170,7 @@ class PasswordRecoveryAPI(APIView):
                 return Response(data={"detail":"Recovery code already sent."},status=status.HTTP_400_BAD_REQUEST) 
             thread = threading.Thread(target=generate_digits,args=(user,))
             thread.start()
-            return Response(status=status.HTTP_201_CREATED)
+            return Response(data={"message":"We are sending recovery email"},status=status.HTTP_201_CREATED)
         except exceptions.ValidationError:
             return Response(data={"detail":"Email validation failed."},status=status.HTTP_400_BAD_REQUEST)
         except Http404:
