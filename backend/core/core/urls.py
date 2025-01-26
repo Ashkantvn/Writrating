@@ -28,7 +28,8 @@ urlpatterns = [
     # admin urls
     path("admin/", admin.site.urls),
     # apps urls
-    path("api/v1/accounts/", include("accounts.urls")),
+    path("api/v1/accounts/", include("accounts.api.v1.urls")),
+    path("api/v1/blogs/", include("blogs.api.v1.urls")),
     # swagger urls
     path(
         "swagger<format>/", schema_view.without_ui(cache_timeout=0), name="schema-json"
