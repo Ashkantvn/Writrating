@@ -19,7 +19,8 @@ def blog():
         author=author,
         )
     yield fake_blog
-    fake_blog.delete()
+    if fake_blog.pk:
+        fake_blog.delete()
     author.delete()
 
 @pytest.fixture
@@ -31,7 +32,7 @@ def blog_with_more_than_60_characters():
         is_admin = True,
     )
     fake_blog = Blog.objects.create(
-        title='This is a blog title with more than 60 characters',
+        title='blog title' * 60,
         content='Test Content',
         author=author,
     )

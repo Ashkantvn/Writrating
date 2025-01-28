@@ -10,6 +10,7 @@ User = get_user_model()
 class TestBlogModel:
 
     def test_blog_creation(self,blog):
+        assert blog.pk
         assert blog.title == 'Test Blog'
         assert blog.banner
         assert blog.status == False
@@ -38,7 +39,7 @@ class TestBlogModel:
     def test_foreign_key_relationship(self,blog):
         assert blog.author
         assert isinstance(blog.author,User)
-        assert blog.author.email == 'test10001@test.com'
+        assert blog.author.email == 'test323123@example.com'
 
         another_blog = Blog.objects.create(
             title='Other Blog',
