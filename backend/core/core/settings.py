@@ -41,10 +41,10 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # created apps
     "accounts.apps.AccountsConfig",
-    "blogs",
-    "devices",
-    "reviews",
-    "user_interactions",
+    "blogs.apps.BlogsConfig",
+    "devices.apps.DevicesConfig",
+    "reviews.apps.ReviewsConfig",
+    "user_interactions.apps.UserInteractionsConfig",
     # third-party apps
     "rest_framework",
     "rest_framework_simplejwt",
