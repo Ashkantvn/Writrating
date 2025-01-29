@@ -26,8 +26,7 @@ class TestBlogModel:
             blog_with_more_than_60_characters.full_clean()
         assert 'title' in exc.value.message_dict
 
-
-    def test_fields_blank_or_null(selfm,blog_with_blank_fields):
+    def test_fields_blank_or_null(self,blog_with_blank_fields):
         with pytest.raises(ValidationError) as exc:
             blog_with_blank_fields.full_clean()
         assert 'title' in exc.value.message_dict
@@ -55,7 +54,6 @@ class TestBlogModel:
         # Ensure that the author has both blogs
         assert (another_blog in author_blogs) and (blog in author_blogs)
         
-
     def test_many_to_many_relationship(self,blog):
         tag1 = Tag.objects.create(name='tag1')
         tag2 = Tag.objects.create(name='tag2')
@@ -91,4 +89,40 @@ class TestBlogModel:
         assert tag2 in Tag.objects.all() 
         assert category2 in Category.objects.all()
 
-        
+@pytest.mark.django_db
+class TestCategoryModel:
+
+    def test_category_creation(self):
+        category = Category.objects.create(name='Test Category')
+        assert category.pk
+        assert category.name == 'Test Category'
+        assert category.created_date
+        assert category.updated_date
+
+    def test_name_field_max_length(self):
+        with pytest.raises(ValidationError) as exc:
+            Category.objects.create(name='a'*61).full_clean()
+        assert 'name' in exc.value.message_dict
+
+    def test_str_representation(self):
+        category = Category.objects.create(name='Test Category')
+        assert str(category) == 'Test Category'
+
+@pytest.mark.django_db
+class TestTagModel:
+
+    def test_tag_creation(self):
+        tag = Tag.objects.create(name='Test Tag')
+        assert tag.pk
+        assert tag.name == 'Test Tag'
+        assert tag.created_date
+        assert tag.updated_date
+
+    def test_name_field_max_length(self):
+        with pytest.raises(ValidationError) as exc:
+            Tag.objects.create(name='a'*61).full_clean()
+        assert 'name' in exc.value.message_dict
+
+    def test_str_representation(self):
+        tag = Tag.objects.create(name='Test Tag')
+        assert str(tag) == 'Test Tag'
