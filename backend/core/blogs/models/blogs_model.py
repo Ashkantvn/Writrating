@@ -18,7 +18,7 @@ class Blog(models.Model):
     tags = models.ManyToManyField(Tag,related_name='blogs')
     categories = models.ManyToManyField('Category',related_name='blogs')
     slug = models.SlugField(max_length=60,unique=True)
-    published_date = models.DateTimeField(default=now,blank=False)
+    published_date = models.DateField(default=now,blank=True)
     update_date = models.DateTimeField(auto_now=True)
     create_date = models.DateTimeField(auto_now_add=True)
 
