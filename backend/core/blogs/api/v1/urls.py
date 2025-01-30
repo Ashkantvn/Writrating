@@ -5,7 +5,7 @@ from blogs.api.v1 import views
 app_name = 'blogs'
 
 urlpatterns = [
-    path('lists/', views.BlogListAPIView.as_view(), name='list'),
+    path('list/', views.BlogListAPIView.as_view(), name='list'),
     # path('add/', views.BlogAddAPIView.as_view(), name='add'),
     # path('<str:slug>/', views.BlogRetrieveAPIView.as_view(), name='details'),
     # path('<str:slug>/edit/', views.BlogEditAPIView.as_view(), name='edit'),
