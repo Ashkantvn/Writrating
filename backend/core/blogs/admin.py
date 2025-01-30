@@ -9,4 +9,19 @@ class BlogAdmin(admin.ModelAdmin):
     list_filter = ['create_date']
     date_hierarchy = 'published_date'
     ordering = ['create_date']
-    readonly_fields = ['create_date', 'update_date']
+    readonly_fields = ['create_date', 'update_date','views']
+    fieldsets = (
+        ('Blog Information', {
+            'fields': (
+                'title', 
+                'banner', 
+                'content', 
+                'status', 
+                'publishable', 
+                'author', 
+                'tags', 
+                'categories', 
+                'published_date',
+                )
+        }),
+    )
