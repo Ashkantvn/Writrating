@@ -1,5 +1,5 @@
 from django.contrib import admin
-from blogs.models import Blog
+from blogs.models import Blog, Tag, Category
 
 # Actions for the admin panel
 def make_publishable(modeladmin, request, queryset):
@@ -37,3 +37,36 @@ class BlogAdmin(admin.ModelAdmin):
         }),
     )
     actions = [make_publishable, make_unpublishable]
+
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ['name', 'created_date']
+    search_fields = ['name']
+    list_filter = ['created_date']
+    date_hierarchy = 'created_date'
+    ordering = ['created_date']
+    readonly_fields = ['created_date']
+    fieldsets = (
+        ('Category Information', {
+            'fields': (
+                'name',
+            )
+        }),
+    )
+
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    list_display = ['name', 'created_date']
+    search_fields = ['name']
+    list_filter = ['created_date']
+    date_hierarchy = 'created_date'
+    ordering = ['created_date']
+    readonly_fields = ['created_date']
+    fieldsets = (
+        ('Tag Information', {
+            'fields': (
+                'name',
+            )
+        }),
+    )
