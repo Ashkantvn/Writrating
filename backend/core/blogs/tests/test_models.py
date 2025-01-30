@@ -1,10 +1,8 @@
 import pytest
 from blogs.tests.fixtures import blog, blog_with_more_than_60_characters,blog_with_blank_fields
 from django.core.exceptions import ValidationError
-from django.contrib.auth import get_user_model
 from blogs.models import Blog,Tag,Category
-
-User = get_user_model()
+from accounts.models import Profile
 
 @pytest.mark.django_db
 class TestBlogModel:
@@ -37,8 +35,7 @@ class TestBlogModel:
 
     def test_foreign_key_relationship(self,blog):
         assert blog.author
-        assert isinstance(blog.author,User)
-        assert blog.author.email == 'test323123@example.com'
+        assert isinstance(blog.author,Profile)
 
         another_blog = Blog.objects.create(
             title='Other Blog',

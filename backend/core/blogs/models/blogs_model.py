@@ -1,10 +1,9 @@
 from django.db import models
-from django.contrib.auth import get_user_model
+from accounts.models import Profile
 from blogs.models.tags_model import Tag
 from django.utils.timezone import now
 from django.utils.text import slugify
 
-User = get_user_model()
 
 
 class Blog(models.Model):
@@ -14,7 +13,7 @@ class Blog(models.Model):
     status = models.BooleanField(default=False)
     views = models.PositiveIntegerField(default=0)
     publishable = models.BooleanField(default=False)
-    author = models.ForeignKey(User,on_delete=models.CASCADE)
+    author = models.ForeignKey(Profile,on_delete=models.CASCADE)
     tags = models.ManyToManyField(Tag,related_name='blogs',blank=True)
     categories = models.ManyToManyField('Category',related_name='blogs',blank=True)
     slug = models.SlugField(max_length=60,unique=True)

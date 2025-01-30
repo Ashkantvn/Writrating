@@ -16,7 +16,7 @@ def blog():
     fake_blog = Blog.objects.create(
         title='Test Blog', 
         content='Test Content',
-        author=author,
+        author=author.profile,
         )
     yield fake_blog
     if fake_blog.pk:
@@ -34,7 +34,7 @@ def blog_with_more_than_60_characters():
     fake_blog = Blog.objects.create(
         title='blog title' * 60,
         content='Test Content',
-        author=author,
+        author=author.profile,
     )
     yield fake_blog
     author.delete()
@@ -50,7 +50,7 @@ def blog_with_blank_fields():
     fake_blog = Blog.objects.create(
         title='',
         content='',
-        author=author,
+        author=author.profile,
     )
     yield fake_blog
     author.delete()
