@@ -9,3 +9,6 @@ class BlogListAPIView(APIView):
     def get(self,request):
         serializer = BlogListSerializer(Blog.objects.all(),many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
+    
+class BlogRetrieveAPIView(APIView):
+    pass
