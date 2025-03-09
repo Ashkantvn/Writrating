@@ -18,7 +18,7 @@ class TagBlogSerializer(ModelSerializer):
         model = Tag
         fields = ['id','name']
 
-class BlogListSerializer(ModelSerializer):
+class BlogSerializer(ModelSerializer):
     author = AuthorBlogSerializer(read_only=True)
     categories = CategoryBlogSerializer(many=True, read_only=True)
     tags = TagBlogSerializer(many=True, read_only=True)

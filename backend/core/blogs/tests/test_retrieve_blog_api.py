@@ -23,8 +23,8 @@ class TestRetrieveBlogApi:
         response = client.get(url)
         assert response.status_code == status.HTTP_404_NOT_FOUND
 
-    def test_GET_retrieve_blog_status_400(self,blog):
+    def test_GET_retrieve_blog_status_400(self):
         client = APIClient()
-        url = reverse('blogs:details',kwargs={'slug':blog.slug})
+        url = reverse('blogs:details',kwargs={'slug':'invalid@slug!example'})
         response = client.get(url)
         assert response.status_code == status.HTTP_400_BAD_REQUEST
