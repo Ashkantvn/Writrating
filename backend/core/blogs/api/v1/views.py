@@ -24,3 +24,7 @@ class BlogRetrieveAPIView(APIView):
             return Response(data={'detail':'Blog not found!'} ,status= status.HTTP_404_NOT_FOUND)
         serializer = BlogSerializer(blog)
         return Response(serializer.data,status=status.HTTP_200_OK)
+    
+
+class BlogAddAPIView(APIView):
+    pass
