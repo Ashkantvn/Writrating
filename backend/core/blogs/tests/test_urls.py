@@ -13,3 +13,8 @@ class TestUrls(SimpleTestCase):
         url = reverse('blogs:details', args={'slug': 'test-blog'})
         view_class = resolve(url).func.view_class
         self.assertEqual(view_class, views.BlogRetrieveAPIView)
+
+    def test_blog_add_url_is_resolved(self):
+        url = reverse('blogs:add')
+        view_class = resolve(url).func.view_class
+        self.assertEqual(view_class,views.BlogAddAPIView)
