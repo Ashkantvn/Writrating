@@ -1,9 +1,38 @@
 import pytest
 from blogs.models.blogs_model import Blog
 from django.contrib.auth import get_user_model
+from rest_framework.test import APIClient
 
 User = get_user_model()
 
+
+@pytest.fixture
+def authenticated_admin_client():
+    user = User.objects.create(
+        email= 'test12431@test.com',
+        password = 'testaofejioj!@##$#%234234',
+        is_active = True,
+        is_admin = True,
+    )
+    client = APIClient()
+    client.force_authenticate(user=user)
+    yield client 
+    user.delete()
+
+
+@pytest.fixture
+def authenticated_user_client():
+    user = User.objects
+    user = User.objects.create(
+        email= 'test12431@test.com',
+        password = 'testaofejioj!@##$#%234234',
+        is_active = True,
+        is_admin = False,
+    )
+    client = APIClient()
+    client.force_authenticate(user=user)
+    yield client 
+    user.delete()
 
 @pytest.fixture
 def blog():
