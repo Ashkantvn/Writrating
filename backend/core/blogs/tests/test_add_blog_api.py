@@ -77,12 +77,12 @@ class TestBlogAddAPI:
         response = client.post(
             url,
             {
-                'title': 'Test Blog',
+                'title': 'Test Blog2',
                 'content': '',
             }
         )
         assert response.status_code == status.HTTP_400_BAD_REQUEST
-        assert not Blog.objects.filter(title='Test Blog').exists() 
+        assert not Blog.objects.filter(title='Test Blog2').exists() 
 
     def test_POST_blog_add_status_403(self,authenticated_user_client):
         client = authenticated_user_client

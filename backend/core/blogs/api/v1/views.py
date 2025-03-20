@@ -1,9 +1,9 @@
 from rest_framework.views import APIView
-from blogs.api.v1.serializers import BlogSerializer
+from blogs.api.v1.serializers import BlogSerializer, BlogCreateSerializer
 from blogs.models import Blog
 from rest_framework.response import Response
-from rest_framework import status
-
+from rest_framework import status, permissions
+from blogs.api.v1.permissions import IsAuthenticatedAndAdmin
 import re
 
 class BlogListAPIView(APIView):
@@ -27,4 +27,10 @@ class BlogRetrieveAPIView(APIView):
     
 
 class BlogAddAPIView(APIView):
-    pass
+    permission_classes = [IsAuthenticatedAndAdmin]
+    
+    def post(self,request):
+        serializer = BlogCreateSerializer(data=request.data,context={'request':request})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(data={"data":"Blog generated successfully"},status=status.HTTP_201_CREATED)
