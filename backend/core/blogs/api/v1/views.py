@@ -34,3 +34,7 @@ class BlogAddAPIView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(data={"data":"Blog generated successfully"},status=status.HTTP_201_CREATED)
+
+
+class BlogEditAPIView(APIView):
+    pass
