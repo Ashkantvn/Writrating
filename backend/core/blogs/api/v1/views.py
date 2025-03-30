@@ -56,3 +56,7 @@ class BlogEditAPIView(APIView):
         serializer.save()
 
         return Response(data={'data':'successfully updated.'},status=status.HTTP_200_OK)
+    
+
+class BlogDeleteAPIView(APIView):
+    pass

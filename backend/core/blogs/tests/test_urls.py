@@ -23,3 +23,8 @@ class TestUrls(SimpleTestCase):
         url = reverse('blogs:edit', args={'slug': 'test-blog'})
         view_class = resolve(url).func.view_class
         self.assertEqual(view_class, views.BlogEditAPIView)
+
+    def test_blog_delete_is_resolved(self):
+        url = reverse('blogs:delete', args={'slug': 'test-blog'})
+        view_class = resolve(url).func.view_class
+        self.assertEqual(view_class, views.BlogDeleteAPIView)
