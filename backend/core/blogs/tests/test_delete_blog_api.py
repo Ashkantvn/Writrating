@@ -8,16 +8,12 @@ from blogs.models import Blog
 @pytest.mark.django_db
 class TestDeleteBlogAPI:
     
-    def test_DELETE_blog_delete_api_status_401(self,authenticated_user_client):
+    def test_DELETE_blog_delete_api_status_401(self):
         """"
         Test that the API returns 401 Unauthorized when no authentication is provided."
         """
         client = APIClient()
         url = reverse('blogs:delete', kwargs={'slug': 'test-blog'})
-        response = client.delete(url)
-        assert response.status_code == 401
-
-        client = authenticated_user_client
         response = client.delete(url)
         assert response.status_code == 401
 
@@ -39,6 +35,15 @@ class TestDeleteBlogAPI:
         response = client.delete(url)
         assert response.status_code == 403
         assert Blog.objects.filter(slug=blog.slug).exists()
+
+    def test_DELETE_blog_delete_api_status_403_for_normal_user(self, authenticated_user_client):
+        """
+        Test that the API returns 403 Forbidden when a normal user try to delete a blog.
+        """
+        client = authenticated_user_client
+        url = reverse('blogs:delete', kwargs={'slug': 'test-blog'})
+        response = client.delete(url)
+        assert response.status_code == 403
 
     def test_DELETE_blog_delete_api_status_400(self,authenticated_admin_client):
         """

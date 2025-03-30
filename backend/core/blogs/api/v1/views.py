@@ -59,4 +59,22 @@ class BlogEditAPIView(APIView):
     
 
 class BlogDeleteAPIView(APIView):
-    pass
+    permission_classes = [IsAuthenticatedAndAdmin,IsAuthor]
+
+    def delete(self,request,slug):
+        """
+        Delete a blog post
+        """
+        # Check if the slug is valid
+        pattern = r'^[a-z0-9]+(?:-[a-z0-9]+)*$'
+        if not re.match(pattern=pattern,string=slug):
+            return Response(data={'detail':'Your slug is invalid'},status=status.HTTP_400_BAD_REQUEST)
+        
+        blog = get_object_or_404(Blog,slug=slug)
+
+        # Enforce object level permission
+        self.check_object_permissions(request=request,obj=blog)
+
+        blog.delete()
+         
+        return Response(data={'data':'successfully deleted.'},status=status.HTTP_200_OK)
