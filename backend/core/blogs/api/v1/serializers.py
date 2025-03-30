@@ -29,7 +29,7 @@ class BlogSerializer(ModelSerializer):
         exclude = ['update_date','create_date','publishable','status']
 
 
-class BlogCreateSerializer(ModelSerializer):
+class BlogCreateAndEditSerializer(ModelSerializer):
     class Meta:
         model = Blog
         fields = [
@@ -52,7 +52,7 @@ class BlogCreateSerializer(ModelSerializer):
         categories = validated_data.pop('categories',[])
         tags = validated_data.pop('tags',[])
 
-        with transaction.atomic():
+        with transaction.atomic(): # Insure that block of code executed within database transactions 
             blog = Blog.objects.create(author=author, **validated_data)
             blog.categories.add(*categories)
             blog.tags.add(*tags)
