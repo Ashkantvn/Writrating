@@ -12,7 +12,7 @@ class TestCheckBlogAPI:
     # GET request tests
     def test_GET_check_blog_api_status_200(self, authenticated_validator_client, blog):
         """
-        Test that the GET request to get the blog API returns a 200 status code
+        Test the GET request to get the blog API returns a 200 status code
         and the expected response data.
         """
         url = reverse('blogs:check', args=[blog.slug])
@@ -23,7 +23,7 @@ class TestCheckBlogAPI:
 
     def test_GET_check_blog_api_status_404(self, authenticated_validator_client):
         """
-        Test that GET request return 404 status code when blog does not exist
+        Test GET request return 404 status code when blog does not exist
         """
         url = reverse('blogs:check', kwargs={'slug':'non-existent-slug'})
         response = authenticated_validator_client.get(url)
@@ -32,7 +32,7 @@ class TestCheckBlogAPI:
 
     def test_GET_check_blog_api_status_401(self):
         """
-        Test that GET request to get the blog API returns a 401 status code
+        Test GET request to get the blog API returns a 401 status code
         when the user is not authenticated.
         """
         url = reverse('blogs:check', kwargs={'slug':'non-existent-slug'})
@@ -43,7 +43,7 @@ class TestCheckBlogAPI:
 
     def test_GET_check_blog_api_status_403(self,authenticated_user_client):
         """
-        Test that GET request to get blog API returns a 403 status code
+        Test GET request to get blog API returns a 403 status code
         when the user does not have permission to access the blog.
         """
         url = reverse('blogs:check',kwargs={'slug':'test-blog'})
@@ -56,6 +56,9 @@ class TestCheckBlogAPI:
     
     # POST request tests
     def test_POST_check_blog_api_status_200(self, authenticated_validator_client):
+        """
+        Test POST request to send response of checking blog returns a 200 status code
+        """
         pass
 
     def test_POST_check_blog_api_status_404(self, authenticated_validator_client):
