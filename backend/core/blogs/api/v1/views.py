@@ -78,3 +78,7 @@ class BlogDeleteAPIView(APIView):
         blog.delete()
          
         return Response(data={'data':'successfully deleted.'},status=status.HTTP_200_OK)
+    
+
+class BlogCheckAPIView(APIView):
+    pass

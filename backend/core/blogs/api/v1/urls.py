@@ -10,5 +10,5 @@ urlpatterns = [
     path('<str:slug>/', views.BlogRetrieveAPIView.as_view(), name='details'),
     path('<str:slug>/edit/', views.BlogEditAPIView.as_view(), name='edit'),
     path('<str:slug>/delete/', views.BlogDeleteAPIView.as_view(), name='delete'),
-    # path('<str:slug/check/', views.BlogCheckAPIView.as_view(), name='check'),
+    path('<str:slug>/check/', views.BlogCheckAPIView.as_view(), name='check'),
 ]
