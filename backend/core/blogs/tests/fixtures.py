@@ -21,6 +21,20 @@ def authenticated_admin_client():
 
 
 @pytest.fixture
+def authenticated_validator_client():
+    user = User.objects.create(
+        email= 'test125324235@test.com',
+        password = 'aoiwemhoijmawfj234@#',
+        is_validator = True,
+        is_active = True,
+    )
+    client = APIClient()
+    client.force_authenticate(user=user)
+    yield client
+    user.delete()
+
+
+@pytest.fixture
 def authenticated_user_client():
     user = User.objects
     user = User.objects.create(
