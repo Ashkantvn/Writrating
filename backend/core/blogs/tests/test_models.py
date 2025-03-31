@@ -1,5 +1,10 @@
 import pytest
-from blogs.tests.fixtures import blog, blog_with_more_than_60_characters,blog_with_blank_fields
+from blogs.tests.fixtures import (
+    blog, 
+    blog_with_more_than_60_characters,
+    blog_with_blank_fields,
+    blog_response,
+    )
 from django.core.exceptions import ValidationError
 from blogs.models import Blog,Tag,Category
 from accounts.models import Profile
@@ -123,3 +128,22 @@ class TestTagModel:
     def test_str_representation(self):
         tag = Tag.objects.create(name='Test Tag')
         assert str(tag) == 'Test Tag'
+
+@pytest.mark.django_db
+class TestBlogResponseModel:
+
+    def test_blog_response_creation(self,blog_response):
+        assert blog_response.pk
+        assert blog_response.response_to
+        assert blog_response.content
+        assert blog_response.author
+
+
+    def test_blog_response_str_representation(self,blog_response):
+        assert str(blog_response) == f'Blog Response to {blog_response.response_to} by {blog_response.author.username}'
+
+    def test_blog_response_foreign_key_relationship(self,blog_response):
+        assert blog_response.response_to
+        assert isinstance(blog_response.response_to, Profile)
+        assert blog_response.author
+        assert isinstance(blog_response.author, Profile)

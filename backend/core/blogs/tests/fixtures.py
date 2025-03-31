@@ -2,6 +2,7 @@ import pytest
 from blogs.models.blogs_model import Blog
 from django.contrib.auth import get_user_model
 from rest_framework.test import APIClient
+from blogs.models import BlogResponse
 
 User = get_user_model()
 
@@ -97,3 +98,29 @@ def blog_with_blank_fields():
     )
     yield fake_blog
     author.delete()
+
+
+@pytest.fixture
+def blog_response():
+    validator = User.objects.create(
+        email = 'test032408@test.com',
+        password = 'testpassword!@#@#213',
+        is_active = True,
+        is_validator = True,
+    )
+    admin = User.objects.create(
+        email = 'test092834@test.com',
+        password = 'testpassword!@#@#2132',
+        is_active = True,
+        is_admin = True,
+    )
+    response = BlogResponse.objects.create(
+        content='Test Response',
+        response_to=admin.profile,
+        author=validator.profile,
+    )
+    yield response
+    if response.pk:
+        response.delete()
+        validator.delete()
+        admin.delete()
