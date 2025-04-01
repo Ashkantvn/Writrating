@@ -104,3 +104,24 @@ class BlogCheckAPIView(APIView):
         serializer = BlogCheckSerializer(blog)
 
         return Response(data=serializer.data,status=status.HTTP_200_OK)
+    
+    def patch(self,request,slug):
+        """
+        Make blog post publishable, when it is.
+        """
+        
+        # Check if the slug is valid
+        pattern = r'^[a-z0-9]+(?:-[a-z0-9]+)*$'
+        if not re.match(pattern=pattern,string=slug):
+            return Response(data={'detail':'Your slug is invalid'},status=status.HTTP_400_BAD_REQUEST)
+        
+        blog = get_object_or_404(Blog,slug=slug)
+
+        # Enforce object level permission
+        self.check_object_permissions(request=request,obj=blog)
+
+        serializer = BlogCheckSerializer(blog,data=request.data,partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(data={'data':'successfully updated.'},status=status.HTTP_200_OK)

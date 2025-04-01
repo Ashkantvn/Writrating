@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from rest_framework import serializers
+from rest_framework import serializers, exceptions
 from accounts.models import Profile
 from blogs.models import Blog,Category,Tag
 from django.db import transaction
@@ -79,3 +79,21 @@ class BlogCheckSerializer(ModelSerializer):
             'update_date',
             'create_date',
         ]
+
+    def validate(self, attrs):
+        """
+        Enshure that only publishable field is editable
+        """
+        allowed_fields = ['publishable']
+        extra_fields = set(attrs.keys()) - set(allowed_fields)
+        if (extra_fields) or (allowed_fields[0] not in attrs.keys()):
+            raise exceptions.PermissionDenied(detail="You can only edit publishable field.")
+        return super().validate(attrs)
+    
+    def update(self, instance, validated_data):
+        """
+        Update only publishable field
+        """
+        instance.publishable = validated_data.get('publishable', instance.publishable)
+        instance.save()
+        return instance
