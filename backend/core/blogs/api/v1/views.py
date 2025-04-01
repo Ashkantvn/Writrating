@@ -1,5 +1,5 @@
 from rest_framework.views import APIView
-from blogs.api.v1.serializers import BlogSerializer, BlogCreateAndEditSerializer, BlogCheckSerializer
+from blogs.api.v1.serializers import ResponseSerializer ,BlogSerializer, BlogCreateAndEditSerializer, BlogCheckSerializer
 from blogs.models import Blog
 from rest_framework.response import Response
 from rest_framework import status
@@ -125,3 +125,24 @@ class BlogCheckAPIView(APIView):
         serializer.save()
 
         return Response(data={'data':'successfully updated.'},status=status.HTTP_200_OK)
+    
+    def post(self,request,slug):
+        """
+        Post reason of rejection.
+        """
+        # Check if the slug is valid
+        pattern = r'^[a-z0-9]+(?:-[a-z0-9]+)*$'
+        if not re.match(pattern=pattern,string=slug):
+            return Response(data={'detail':'Your slug is invalid'},status=status.HTTP_400_BAD_REQUEST)
+        
+        blog = get_object_or_404(Blog,slug=slug)
+        blog_author = blog.author
+
+        # Enforce object level permission
+        self.check_object_permissions(request=request,obj=blog)
+
+        serializer = ResponseSerializer(data=request.data,context={'user':request.user,'blog_author':blog_author})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(data={'data':'Response successfully sent'},status=status.HTTP_200_OK)

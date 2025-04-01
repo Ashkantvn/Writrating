@@ -69,7 +69,6 @@ class TestCheckBlogAPI:
         data = {
             'title': 'test response',
             'content': 'test content',
-            'response_to': blog.author,
         }
         response = client.post(url, data)
         assert response.status_code == status.HTTP_200_OK
