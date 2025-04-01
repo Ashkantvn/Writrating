@@ -1,9 +1,9 @@
 from rest_framework.views import APIView
-from blogs.api.v1.serializers import BlogSerializer, BlogCreateAndEditSerializer
+from blogs.api.v1.serializers import BlogSerializer, BlogCreateAndEditSerializer, BlogCheckSerializer
 from blogs.models import Blog
 from rest_framework.response import Response
 from rest_framework import status
-from blogs.api.v1.permissions import IsAuthenticatedAndAdmin, IsAuthor
+from blogs.api.v1.permissions import IsAuthenticatedAndAdmin, IsAuthor, IsValidator
 from django.shortcuts import get_object_or_404
 import re
 
@@ -81,4 +81,26 @@ class BlogDeleteAPIView(APIView):
     
 
 class BlogCheckAPIView(APIView):
-    pass
+    permission_classes = [IsValidator]
+    
+
+    
+    def get(self,request,slug):
+        """
+        Get target blog post to check if it is valid.
+        """
+        
+        # Check if the slug is valid
+        pattern = r'^[a-z0-9]+(?:-[a-z0-9]+)*$'
+        if not re.match(pattern=pattern,string=slug):
+            return Response(data={'detail':'Your slug is invalid'},status=status.HTTP_400_BAD_REQUEST)
+        
+        blog = get_object_or_404(Blog,slug=slug)
+
+        # Enforce object level permission
+        self.check_object_permissions(request=request,obj=blog)
+
+
+        serializer = BlogCheckSerializer(blog)
+
+        return Response(data=serializer.data,status=status.HTTP_200_OK)

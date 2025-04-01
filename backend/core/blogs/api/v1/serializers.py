@@ -58,4 +58,24 @@ class BlogCreateAndEditSerializer(ModelSerializer):
             blog.tags.add(*tags)
 
         return blog
-        
+    
+
+class BlogCheckSerializer(ModelSerializer):
+    class Meta:
+        model = Blog
+        fields = "__all__"
+        read_only_fields = [
+            'id',
+            'title',
+            'banner',
+            'content',
+            'status',
+            'views',
+            'author',
+            'tags',
+            'categories',
+            'slug',
+            'published_date',
+            'update_date',
+            'create_date',
+        ]
