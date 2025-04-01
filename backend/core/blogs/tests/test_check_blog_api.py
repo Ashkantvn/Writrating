@@ -195,7 +195,7 @@ class TestCheckBlogAPI:
 
 
     # slug test
-    def test_check_blog_api_invalid_slug(self, authenticated_validator_client):
+    def test_check_blog_api_invalid_slug(self,blog ,authenticated_validator_client):
         """
         Test methods with invalid slug
         """
