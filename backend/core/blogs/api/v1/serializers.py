@@ -58,7 +58,8 @@ class BlogCreateAndEditSerializer(ModelSerializer):
         categories = validated_data.pop("categories", [])
         tags = validated_data.pop("tags", [])
 
-        with transaction.atomic():  # Insure that block of code executed within database transactions
+        # Insure that block of code executed within db transactions
+        with transaction.atomic():
             blog = Blog.objects.create(author=author, **validated_data)
             blog.categories.add(*categories)
             blog.tags.add(*tags)

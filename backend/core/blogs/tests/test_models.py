@@ -17,10 +17,10 @@ class TestBlogModel:
         assert blog.pk
         assert blog.title == "Test Blog"
         assert blog.banner
-        assert blog.status == False
+        assert not blog.status
         assert blog.views == 0
         assert blog.slug == "test-blog"
-        assert blog.publishable == False
+        assert not blog.publishable
         assert blog.published_date
         assert blog.create_date
         assert blog.update_date

@@ -130,7 +130,7 @@ class TestCheckBlogAPI:
         response = client.patch(url, data)
         assert response.status_code == status.HTTP_200_OK
         blog.refresh_from_db()
-        assert blog.publishable == True
+        assert blog.publishable
 
     def test_PATCH_check_blog_api_status_404(self, authenticated_validator_client):
         """
@@ -158,7 +158,7 @@ class TestCheckBlogAPI:
         response = client.patch(url, data)
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
         blog.refresh_from_db()
-        assert blog.publishable == False
+        assert not blog.publishable
 
     def test_PATCH_check_blog_api_status_403(self, blog, authenticated_admin_client):
         """
@@ -173,7 +173,7 @@ class TestCheckBlogAPI:
         response = client.patch(url, data)
         assert response.status_code == status.HTTP_403_FORBIDDEN
         blog.refresh_from_db()
-        assert blog.publishable == False
+        assert not blog.publishable
 
     def test_PATCH_check_blog_api_status_403_as_validator(
         self, blog, authenticated_validator_client

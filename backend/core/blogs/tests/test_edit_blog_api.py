@@ -10,7 +10,8 @@ class TestEditBlogAPI:
 
     def test_edit_blog_status_code_401(self):
         """
-        Test that the edit blog API returns a 401 status code when the user is not authenticated.
+        Test that the edit blog API returns a 401 status code,
+        when the user is not authenticated.
         """
         client = APIClient()
         url = reverse("blogs:edit", kwargs={"slug": "test-blog"})
@@ -21,7 +22,8 @@ class TestEditBlogAPI:
 
     def test_edit_blog_status_code_403(self, authenticated_admin_client, blog):
         """
-        Test that the edit blog API returns a 403 status code when the user wants to edit a blog that does not belong to them.
+        Test that the edit blog API returns a 403 status code,
+        when the user wants to edit a blog that does not belong to them.
         """
         client = authenticated_admin_client
         url = reverse("blogs:edit", kwargs={"slug": blog.slug})
@@ -34,7 +36,8 @@ class TestEditBlogAPI:
 
     def test_edit_blog_status_code_404(self, authenticated_admin_client):
         """
-        Test that the edit blog API returns a 404 status code when the blog does not exist.
+        Test that the edit blog API returns a 404 status code,
+        when the blog does not exist.
         """
         client = authenticated_admin_client
         url = reverse("blogs:edit", kwargs={"slug": "non-existent-blog"})
@@ -45,7 +48,8 @@ class TestEditBlogAPI:
 
     def test_edit_blog_status_code_200(self, blog):
         """
-        Test that the edit blog API returns a 200 status code when the blog is successfully edited.
+        Test that the edit blog API returns a 200 status code,
+        when the blog is successfully edited.
         """
         client = APIClient()
         client.force_authenticate(user=blog.author.user)

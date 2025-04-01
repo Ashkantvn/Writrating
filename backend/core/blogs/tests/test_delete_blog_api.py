@@ -32,7 +32,8 @@ class TestDeleteBlogAPI:
 
     def test_DELETE_blog_delete_api_status_403(self, authenticated_admin_client, blog):
         """
-        Test that the API returns 403 Forbidden, and the blog still exists when a user attempts to delete a blog they do not own.
+        Test that the API returns 403 Forbidden,
+        and the blog still exists when a user attempts to delete a blog they do not own.
         """
         client = authenticated_admin_client
         url = reverse("blogs:delete", kwargs={"slug": blog.slug})
