@@ -9,13 +9,8 @@ class BlogResponse(Response):
     This model is used to store responses related to blog posts.
     """
 
-    response_to = models.ForeignKey(
-        Profile,
-        on_delete=models.CASCADE,
-        related_name="blog_responses",
-    )
-
     class Meta:
+        proxy = True
         verbose_name = "Blog Response"
 
     def __str__(self):
