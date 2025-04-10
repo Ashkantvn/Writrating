@@ -1,5 +1,5 @@
 from django.contrib import admin
-from blogs.models import Blog, Tag, Category
+from blogs.models import Blog, Tag, Category, BlogResponse
 
 
 # Actions for the admin panel
@@ -67,3 +67,6 @@ class TagAdmin(admin.ModelAdmin):
     ordering = ["created_date"]
     readonly_fields = ["created_date"]
     fieldsets = (("Tag Information", {"fields": ("name",)}),)
+
+
+admin.site.register(BlogResponse)
