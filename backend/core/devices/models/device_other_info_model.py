@@ -16,7 +16,7 @@ class DeviceImages(models.Model):
 # Device features
 class DeviceFeatures(models.Model):
     accessories = models.CharField(max_length=255, blank=False)
-    seciurity = models.CharField(max_length=255, blank=False)
+    security = models.CharField(max_length=255, blank=False)
     warranty_and_support = models.CharField(max_length=255, blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+from django.utils.timezone import now
 
 # Processor
 class Processor(models.Model):
@@ -11,6 +12,7 @@ class Processor(models.Model):
     processor_technology = models.CharField(max_length=255, blank=False)
     slug = models.SlugField(unique=True)
     publishable = models.BooleanField(default=False)
+    release_date = models.DateField(default=now, blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -51,6 +53,9 @@ class Camera(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return f"{self.description}"
+
 # Display
 class Display(models.Model):
     size = models.CharField(max_length=255, blank=False)
@@ -64,4 +69,5 @@ class Display(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.device.name} Display"
+        
+        return f"{self.size} Display ({self.pk})"

@@ -19,10 +19,10 @@ class Device(models.Model):
         'DeviceSoftwareInformation', on_delete=models.CASCADE, related_name='device',blank=False
     )
     category = models.ForeignKey(
-        'DeviceCategory', on_delete=models.CASCADE, related_name='devices',blank=False
+        'DeviceCategory', on_delete=models.CASCADE, related_name='device',blank=False
     )
     features = models.OneToOneField(
-        'DeviceFeatures', on_delete=models.CASCADE, related_name='devices',blank=False
+        'DeviceFeatures', on_delete=models.CASCADE, related_name='device',blank=False
     )
     slug = models.SlugField(unique=True)
     created_at = models.DateTimeField(auto_now_add=True)

@@ -14,3 +14,4 @@ from .hardware_other_info_model import (
     GraphicProcessor
     )
 from .software_other_info_model import OperatingSystem
+from .device_response_model import DeviceResponse
