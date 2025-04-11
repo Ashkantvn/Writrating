@@ -8,7 +8,7 @@ from rest_framework.response import Response
 class DevicesListAPIView(APIView):
     
     def get(self, request):
-        devices = Device.objects.all()
+        devices = Device.objects.filter(publishable=True)
         serializer = serializers.DeviceSerializer(devices,many=True)
         if devices.count() == 0:
             return Response({"data":[],"detail":"No devices found"}, status=status.HTTP_200_OK)
