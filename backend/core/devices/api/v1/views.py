@@ -23,3 +23,8 @@ class DeviceDetailsAPIView(APIView):
         device = get_object_or_404(Device, slug=slug, publishable=True)
         serializer = serializers.DeviceSerializer(device)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+
+# Add new Device
+class DevicesAddAPIView(APIView):
+    pass

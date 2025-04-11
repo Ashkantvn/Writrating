@@ -5,7 +5,7 @@ app_name = "devices"
 
 urlpatterns = [
     path('',views.DevicesListAPIView.as_view(), name='list'),
-    # path('add/',views.DevicesCreateAPIView.as_view(), name='create'),
+    path('add/',views.DevicesAddAPIView.as_view(), name='add'),
     path('<str:slug>/',views.DeviceDetailsAPIView.as_view(), name='details'),
     # path('<str:slug>/edit/',views.DevicesUpdateAPIView.as_view(), name='update'),
     # path('<str:slug>/delete/',views.DevicesDeleteAPIView.as_view(), name='delete'),

@@ -16,3 +16,8 @@ class TestURLS:
         url = reverse("devices:details", args=["test-slug"])
         view_class = resolve(url).func.view_class
         assert view_class == views.DeviceDetailsAPIView
+
+    def test_devices_add_url_is_resolved(self):
+        url = reverse("devices:add")
+        view_class = resolve(url).func.view_class
+        assert view_class == views.DevicesAddAPIView
