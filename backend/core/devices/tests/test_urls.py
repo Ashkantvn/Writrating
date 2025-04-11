@@ -12,4 +12,7 @@ class TestURLS:
         view_class = resolve(url).func.view_class
         assert view_class == views.DevicesListAPIView
 
-    
+    def test_devices_details_url_is_resolved(self):
+        url = reverse("devices:details", args=["test-slug"])
+        view_class = resolve(url).func.view_class
+        assert view_class == views.DeviceDetailsAPIView

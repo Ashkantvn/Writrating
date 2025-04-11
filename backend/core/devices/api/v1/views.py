@@ -4,6 +4,7 @@ from devices.api.v1 import serializers
 from rest_framework import status
 from rest_framework.response import Response
 
+# Devices list
 class DevicesListAPIView(APIView):
     
     def get(self, request):
@@ -13,3 +14,7 @@ class DevicesListAPIView(APIView):
             return Response({"data":[],"detail":"No devices found"}, status=status.HTTP_200_OK)
         else:
             return Response(serializer.data, status=status.HTTP_200_OK)
+        
+# Devices details
+class DeviceDetailsAPIView(APIView):
+    pass
