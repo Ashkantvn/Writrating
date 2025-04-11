@@ -8,7 +8,7 @@ from blogs.api.v1.serializers import (
 from blogs.models import Blog
 from rest_framework.response import Response
 from rest_framework import status
-from blogs.api.v1.permissions import IsAuthenticatedAndAdmin, IsAuthor, IsValidator
+from core.permissions import IsAuthenticatedAndAdmin, IsAuthor, IsValidator
 from django.shortcuts import get_object_or_404
 import re
 
