@@ -8,6 +8,7 @@ def device():
         device_name="Test Device",
         price=100.0,
         release_date="2022-01-01",
+        publishable=True,
         physical_information=DevicesModel.DevicePhysicalInformation.objects.create(
             width=10.0,
             height=20.0,

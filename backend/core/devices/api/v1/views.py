@@ -3,6 +3,7 @@ from devices.models import Device
 from devices.api.v1 import serializers
 from rest_framework import status
 from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
 
 # Devices list
 class DevicesListAPIView(APIView):
@@ -17,4 +18,8 @@ class DevicesListAPIView(APIView):
         
 # Devices details
 class DeviceDetailsAPIView(APIView):
-    pass
+    
+    def get(self, request,slug):
+        device = get_object_or_404(Device, slug=slug, publishable=True)
+        serializer = serializers.DeviceSerializer(device)
+        return Response(serializer.data, status=status.HTTP_200_OK)
