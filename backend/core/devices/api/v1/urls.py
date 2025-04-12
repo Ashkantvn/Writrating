@@ -8,6 +8,6 @@ urlpatterns = [
     path('add/',views.DevicesAddAPIView.as_view(), name='add'),
     path('<str:slug>/',views.DeviceDetailsAPIView.as_view(), name='details'),
     path('<str:slug>/edit/',views.DeviceEditAPIView.as_view(), name='edit'),
-    # path('<str:slug>/delete/',views.DevicesDeleteAPIView.as_view(), name='delete'),
+    path('<str:slug>/delete/',views.DeviceDeleteAPIView.as_view(), name='delete'),
     # path('<str:slug>/check/',views.DevicesCheckAPIView.as_view(), name='check'),
 ]
