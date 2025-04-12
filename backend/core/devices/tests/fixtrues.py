@@ -22,7 +22,7 @@ def device():
         ),
         hardware_information=DevicesModel.DeviceHardwareInformation.objects.create(
             battery='Li-ion',
-            memmory=12,
+            memory=12,
             graphic_processor=DevicesModel.GraphicProcessor.objects.create(
                 graphic_processor_name="Test Processor",
                 g_ram=8,

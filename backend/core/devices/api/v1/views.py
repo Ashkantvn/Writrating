@@ -4,6 +4,7 @@ from devices.api.v1 import serializers
 from rest_framework import status
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
+from core.permissions import IsAuthenticatedAndAdmin
 
 # Devices list
 class DevicesListAPIView(APIView):
@@ -27,4 +28,11 @@ class DeviceDetailsAPIView(APIView):
 
 # Add new Device
 class DevicesAddAPIView(APIView):
-    pass
+    permission_classes = [IsAuthenticatedAndAdmin]
+    
+    def post(self, request):
+        serializer = serializers.DeviceAddSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

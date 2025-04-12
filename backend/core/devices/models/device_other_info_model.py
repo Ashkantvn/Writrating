@@ -43,7 +43,7 @@ class DeviceSoftwareInformation(models.Model):
 # Device hardware information
 class DeviceHardwareInformation(models.Model):
     battery = models.CharField(max_length=255, blank=False)
-    memmory = models.IntegerField(blank=False)
+    memory = models.IntegerField(blank=False)
     storage = models.CharField(max_length=255, blank=False)
     sensors = models.CharField(max_length=255, blank=False)
     created_at = models.DateTimeField(auto_now_add=True)

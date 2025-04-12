@@ -8,7 +8,8 @@ DATA = {
         "thickness": 5.0,
         "ports": "USB",
         "material": "Metal",
-        "device_color": "Red"
+        "device_color": "Red",
+        "wireless_connectivity": "Test Connectivity"
     },
     "hardware_information": {
         "battery": "Li-ion",
