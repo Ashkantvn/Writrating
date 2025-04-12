@@ -68,7 +68,7 @@ class DeviceCategorySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 # Main device serializers
-class DeviceAddSerializer(serializers.ModelSerializer):
+class DeviceManagementSerializer(serializers.ModelSerializer):
     physical_information = DevicePhysicalInformationSerializer()
     hardware_information = DeviceHardwareInformationSerializer()
     software_information = DeviceSoftwareInformationSerializer()

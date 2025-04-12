@@ -31,11 +31,20 @@ class DevicesAddAPIView(APIView):
     permission_classes = [IsAuthenticatedAndAdmin]
     
     def post(self, request):
-        serializer = serializers.DeviceAddSerializer(data=request.data)
+        serializer = serializers.DeviceManagementSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 class DeviceEditAPIView(APIView):
-    pass
+    permission_classes = [IsAuthenticatedAndAdmin]
+
+
+    def patch(self, request, slug):
+        device = get_object_or_404(Device, slug=slug)
+        serializer = serializers.DeviceManagementSerializer(instance=device, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
