@@ -1,8 +1,6 @@
 import pytest
-from django.urls import reverse,resolve
+from django.urls import reverse, resolve
 from devices.api.v1 import views
-
-
 
 
 @pytest.mark.django_db

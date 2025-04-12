@@ -2,7 +2,6 @@ from django.db import models
 from django.utils.text import slugify
 
 
-
 class OperatingSystem(models.Model):
     os_name = models.CharField(max_length=255, blank=False)
     kernel = models.CharField(max_length=255, blank=False)
@@ -15,7 +14,7 @@ class OperatingSystem(models.Model):
 
     def __str__(self):
         return self.os_name
-    
+
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.os_name)
