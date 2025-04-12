@@ -4,7 +4,7 @@ from devices.api.v1 import serializers
 from rest_framework import status
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-from core.permissions import IsAuthenticatedAndAdmin
+from core.permissions import IsAuthenticatedAndAdmin, IsValidator
 
 # Devices list
 class DevicesListAPIView(APIView):
@@ -42,6 +42,10 @@ class DeviceEditAPIView(APIView):
 
     def patch(self, request, slug):
         device = get_object_or_404(Device, slug=slug)
+
+        # Enforce object level permission
+        self.check_object_permissions(request=request, obj=device)
+
         serializer = serializers.DeviceManagementSerializer(instance=device, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -53,9 +57,40 @@ class DeviceDeleteAPIView(APIView):
 
     def delete(self, request, slug):
         device = get_object_or_404(Device, slug=slug)
+
+        # Enforce object level permission
+        self.check_object_permissions(request=request, obj=device)
+
         device.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
 
 class DeviceCheckAPIView(APIView):
-    pass
+    permission_classes= [IsValidator]
+
+    def patch(self, request, slug):
+        device = get_object_or_404(Device, slug=slug)
+
+        # Enforce object level permission
+        self.check_object_permissions(request=request, obj=device)
+
+        serializer = serializers.DeviceCheckSerializer(instance=device, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    def post(self, request, slug):
+        device = get_object_or_404(Device, slug=slug)
+
+        # Enforce object level permission
+        self.check_object_permissions(request=request, obj=device)
+
+        serializer = serializers.DeviceResponseSerializer(data=request.data,context={'user':request.user})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({'data':'response sent to validator'}, status=status.HTTP_201_CREATED)
+
+
+    
+    
+        

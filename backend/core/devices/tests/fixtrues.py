@@ -11,7 +11,7 @@ def device():
         device_name="Test Device",
         price=100.0,
         release_date="2022-01-01",
-        publishable=True,
+        publishable=False,
         physical_information=DevicesModel.DevicePhysicalInformation.objects.create(
             width=10.0,
             height=20.0,
@@ -113,4 +113,33 @@ def user_client():
     yield client
     if user.pk:
         user.delete()  
+
+
+# Validator client
+@pytest.fixture
+def validator_client():
+    user = User.objects.create(
+    email = "test234edflkj@test.com",
+    password = "asdoijfopamwv@#$235",   
+    is_admin = False,  
+    is_active = True, 
+    is_validator = True,  
+    )
+    client = APIClient()
+    client.force_authenticate(user=user)
+    yield client
+    if user.pk:
+        user.delete()
     
+# Admin 
+@pytest.fixture
+def admin():
+    user = User.objects.create(
+    email = "test234edflkjihj@test.com",
+    password = "asdoijfopamwv@#$235",   
+    is_admin = True,  
+    is_active = True, 
+    )
+    yield user
+    if user.pk:
+        user.delete()

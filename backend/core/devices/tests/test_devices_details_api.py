@@ -9,6 +9,9 @@ class TestDeviceDetailsAPI:
 
     def test_GET_device_details_status_200(self,device):
         client = APIClient()
+        if not device.publishable:
+            device.publishable = True
+            device.save()
         url = reverse('devices:details', args=[device.slug])
         response = client.get(url)
         assert response.status_code == status.HTTP_200_OK

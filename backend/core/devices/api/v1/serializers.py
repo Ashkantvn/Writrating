@@ -1,6 +1,10 @@
 from rest_framework import serializers
 from devices import models
 from django.db import transaction
+from django.contrib.auth import get_user_model
+import random
+
+User = get_user_model()
 
 # Physical info serializer
 class DevicePhysicalInformationSerializer(serializers.ModelSerializer):
@@ -139,3 +143,36 @@ class DeviceSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Device
         fields = '__all__'
+
+
+# Serializers for checked device's response
+class DeviceCheckSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.Device
+        fields = ['publishable']
+
+class DeviceResponseSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.DeviceResponse
+        fields = ["title", "content"]
+
+    def create(self, validated_data):
+        admins = User.objects.filter(is_admin=True)
+        target_admin = random.choice(admins)
+        response_to = target_admin.profile
+
+        user = self.context.get("user")
+        if not response_to or not user:
+            raise serializers.ValidationError(
+                detail="A valid user profile is required to create a response."
+            )
+
+        profile = getattr(user, "profile", None)
+        response = models.DeviceResponse.objects.create(
+            response_to=response_to, author=profile, **validated_data
+        )
+        response.save()
+
+        return response
