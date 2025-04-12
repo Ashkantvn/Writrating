@@ -49,4 +49,9 @@ class DeviceEditAPIView(APIView):
     
 
 class DeviceDeleteAPIView(APIView):
-    pass
+    permission_classes = [IsAuthenticatedAndAdmin]
+
+    def delete(self, request, slug):
+        device = get_object_or_404(Device, slug=slug)
+        device.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
