@@ -31,3 +31,8 @@ class TestURLS:
         url = reverse("devices:delete", args=["test-slug"])
         view_class = resolve(url).func.view_class
         assert view_class == views.DeviceDeleteAPIView
+
+    def test_devices_check_is_resolved(self):
+        url = reverse("devices:check", args=["test-slug"])
+        view_class = resolve(url).func.view_class
+        assert view_class == views.DeviceCheckAPIView
