@@ -15,3 +15,8 @@ class TestReviewUrls:
         url = reverse("reviews:add")
         view_class = resolve(url).func.view_class
         assert view_class == views.ReviewAddAPIView
+
+    def test_review_details_is_resolved(self):
+        url = reverse("reviews:details", args=["test-slug"])
+        view_class = resolve(url).func.view_class
+        assert view_class == views.ReviewDetailsAPIView

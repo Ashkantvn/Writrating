@@ -48,3 +48,25 @@ class ReviewAddAPIView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response({'data':'Review Generated Successfully'}, status=status.HTTP_201_CREATED)
+
+
+class ReviewDetailsAPIView(APIView):
+
+    def get(self, request, slug):
+        device_review = models.DeviceReview.objects.filter(slug=slug).first()
+        processor_review = models.ProcessorReview.objects.filter(slug=slug).first()
+        graphics_processor_review = models.GraphicsProcessorReview.objects.filter(slug=slug).first()
+        operating_system_review = models.OperatingSystemReview.objects.filter(slug=slug).first()
+        
+        if device_review:
+            serializer = serializers.DeviceReviewSerializer(device_review)
+        elif processor_review:
+            serializer = serializers.ProcessorReviewSerializer(processor_review)
+        elif graphics_processor_review:
+            serializer = serializers.GraphicsProcessorReviewSerializer(graphics_processor_review)
+        elif operating_system_review:
+            serializer = serializers.OperatingSystemReviewSerializer(operating_system_review)
+        else:
+            return Response({'detail': 'No review found'}, status=status.HTTP_404_NOT_FOUND)
+        
+        return Response(serializer.data, status=status.HTTP_200_OK)
