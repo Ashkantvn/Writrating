@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from reviews import models
 from reviews.api.v1 import serializers
-from core.permissions import IsAuthenticatedAndAdmin
+from core.permissions import IsAuthenticatedAndAdmin, IsAuthor
 
 class ReviewsListAPIView(APIView):
     
@@ -44,6 +44,16 @@ class ReviewAddAPIView(APIView):
     permission_classes = [IsAuthenticatedAndAdmin]
 
     def post(self, request):
+        """
+        POST /api/v1/reviews/
+
+        Creates a review for a specified device, processor, graphics processor or operating system.
+
+        :param request: The HTTP request
+        :param request.data: A dictionary containing the review data
+        :return: A Response object with a success message and a 201 status code
+        :rtype: Response
+        """
         serializer = serializers.AddReviewSerializer(data=request.data, context = {"user": request.user})
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -53,6 +63,18 @@ class ReviewAddAPIView(APIView):
 class ReviewDetailsAPIView(APIView):
 
     def get(self, request, slug):
+        """
+        Retrieve a review by slug.
+
+        This method fetches a review based on the provided slug. It checks for a review
+        among device, processor, graphics processor, and operating system reviews. If a review
+        is found, it is serialized and returned. If no review is found, a 404 response is returned.
+
+        :param request: The HTTP request object.
+        :param slug: The unique slug identifying the review.
+        :return: A Response object containing serialized review data or a 404 error message.
+        :rtype: Response
+        """
         device_review = models.DeviceReview.objects.filter(slug=slug).first()
         processor_review = models.ProcessorReview.objects.filter(slug=slug).first()
         graphics_processor_review = models.GraphicsProcessorReview.objects.filter(slug=slug).first()
@@ -70,3 +92,26 @@ class ReviewDetailsAPIView(APIView):
             return Response({'detail': 'No review found'}, status=status.HTTP_404_NOT_FOUND)
         
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+
+class ReviewDeleteAPIView(APIView):
+    permission_classes = [IsAuthenticatedAndAdmin,IsAuthor]
+
+    def delete(self, request, slug):
+        device_review = models.DeviceReview.objects.filter(slug=slug).first()
+        processor_review = models.ProcessorReview.objects.filter(slug=slug).first()
+        graphics_processor_review = models.GraphicsProcessorReview.objects.filter(slug=slug).first()
+        operating_system_review = models.OperatingSystemReview.objects.filter(slug=slug).first()
+        
+        if device_review:
+            device_review.delete()
+        elif processor_review:
+            processor_review.delete()
+        elif graphics_processor_review:
+            graphics_processor_review.delete()
+        elif operating_system_review:
+            operating_system_review.delete()
+        else:
+            return Response({'detail': 'No review found'}, status=status.HTTP_404_NOT_FOUND)
+        
+        return Response({'detail': 'Review deleted successfully'}, status=status.HTTP_200_OK)

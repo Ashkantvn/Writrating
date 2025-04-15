@@ -7,4 +7,5 @@ urlpatterns = [
     path("", views.ReviewsListAPIView.as_view(), name="list"),
     path("add/", views.ReviewAddAPIView.as_view(), name="add"),
     path("<str:slug>/", views.ReviewDetailsAPIView.as_view(), name="details"),
+    path("<str:slug>/delete/", views.ReviewDeleteAPIView.as_view(), name="delete"),
 ]
