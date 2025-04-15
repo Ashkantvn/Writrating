@@ -2,6 +2,7 @@ import pytest
 from reviews import models
 from django.contrib.auth import get_user_model
 from devices import models as DevicesModel
+from rest_framework.test import APIClient
 
 User = get_user_model()
 
@@ -199,3 +200,31 @@ def graphic_processor_review():
         review.delete()
         user.delete()
         target.delete()
+
+@pytest.fixture
+def admin_client():
+    user = User.objects.create(
+        email="test2342edflkjihj@test.com",
+        password="asdoijfopamwv@#$235",
+        is_admin=True,
+        is_active=True,
+    )
+    client = APIClient()
+    client.force_authenticate(user=user)
+    yield client
+    if user.pk:
+        user.delete()
+
+@pytest.fixture
+def authenticated_client():
+    user = User.objects.create(
+        email="test2342edflkjihj@test.com",
+        password="asdoijfopamwv@#$235",
+        is_admin=False,
+        is_active=True,
+    )
+    client = APIClient()
+    client.force_authenticate(user=user)
+    yield client
+    if user.pk:
+        user.delete()

@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from reviews import models
 from reviews.api.v1 import serializers
+from core.permissions import IsAuthenticatedAndAdmin
 
 class ReviewsListAPIView(APIView):
     
@@ -38,3 +39,12 @@ class ReviewsListAPIView(APIView):
 
         return Response(reviews_data, status=status.HTTP_200_OK)
 
+
+class ReviewAddAPIView(APIView):
+    permission_classes = [IsAuthenticatedAndAdmin]
+
+    def post(self, request):
+        serializer = serializers.AddReviewSerializer(data=request.data, context = {"user": request.user})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({'data':'Review Generated Successfully'}, status=status.HTTP_201_CREATED)
