@@ -102,6 +102,12 @@ class ReviewDeleteAPIView(APIView):
         processor_review = models.ProcessorReview.objects.filter(slug=slug).first()
         graphics_processor_review = models.GraphicsProcessorReview.objects.filter(slug=slug).first()
         operating_system_review = models.OperatingSystemReview.objects.filter(slug=slug).first()
+
+        review = device_review or processor_review or graphics_processor_review or operating_system_review
+        if not review:
+            return Response({'detail': 'No review found'}, status=status.HTTP_404_NOT_FOUND)
+        # Check obj level permission
+        self.check_object_permissions(request=request, obj=review)
         
         if device_review:
             device_review.delete()
@@ -109,9 +115,10 @@ class ReviewDeleteAPIView(APIView):
             processor_review.delete()
         elif graphics_processor_review:
             graphics_processor_review.delete()
-        elif operating_system_review:
-            operating_system_review.delete()
         else:
-            return Response({'detail': 'No review found'}, status=status.HTTP_404_NOT_FOUND)
+            operating_system_review.delete()
         
-        return Response({'detail': 'Review deleted successfully'}, status=status.HTTP_200_OK)
+        return Response({'detail': 'Review deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+    
+class ReviewEditAPIView(APIView):
+    pass

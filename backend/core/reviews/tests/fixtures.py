@@ -203,12 +203,12 @@ def graphic_processor_review():
 
 @pytest.fixture
 def admin_client():
-    user = User.objects.create(
-        email="test2342edflkjihj@test.com",
-        password="asdoijfopamwv@#$235",
-        is_admin=True,
+    user = User.objects.get_or_create(
+        email="test@test.com",
+        password="adjfapwo@#123AFDADS",
         is_active=True,
-    )
+        is_admin=True  
+    )[0]
     client = APIClient()
     client.force_authenticate(user=user)
     yield client

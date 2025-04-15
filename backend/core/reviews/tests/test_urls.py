@@ -25,3 +25,8 @@ class TestReviewUrls:
         url = reverse("reviews:delete", args=["test-slug"])
         view_class = resolve(url).func.view_class
         assert view_class == views.ReviewDeleteAPIView
+
+    def test_review_edit_is_resolved(self):
+        url = reverse("reviews:edit", args=["test-slug"])
+        view_class = resolve(url).func.view_class
+        assert view_class == views.ReviewEditAPIView
