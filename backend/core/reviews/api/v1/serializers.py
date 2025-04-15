@@ -44,14 +44,17 @@ class AddReviewSerializer(serializers.Serializer):
             raise exceptions.NotFound("Processor does not exist")
         elif target_type == "GraphicsProcessor" and not DeviceModels.GraphicProcessor.objects.filter(slug=target).exists():
             raise exceptions.NotFound("GraphicsProcessor does not exist")
+        elif target_type == "OperatingSystem" and not DeviceModels.OperatingSystem.objects.filter(slug=target).exists():
+            raise exceptions.NotFound("OperatingSystem does not exist")
+        else:
+            return super().validate(attrs)
         
-        return super().validate(attrs)
 
     def create(self, validated_data):
         target_type = validated_data.pop("target_type")
         slug = validated_data.pop("target")
 
-
+        # set author
         user = self.context.get("user")
         if not user:
             raise serializers.ValidationError(
@@ -61,6 +64,7 @@ class AddReviewSerializer(serializers.Serializer):
             author = AccountModels.Profile.objects.get(user=user)
             validated_data["author"] = author
 
+        # set target
         if target_type == "Device":
             target = DeviceModels.Device.objects.get(slug=slug)
             if target.pk:
