@@ -3,6 +3,7 @@ from reviews.tests.fixtures import validator_client, device_review,admin_client
 from django.urls import reverse
 from rest_framework.test import APIClient
 from rest_framework import status
+from reviews import models
 
 
 @pytest.mark.django_db
@@ -60,10 +61,14 @@ class TestCheckReviewApi:
         data = {
             "title": "Test title",
             "content": "Test content",
-            "response_to": device_review.author
         }
         response = client.post(url,data=data)
         assert response.status_code == status.HTTP_201_CREATED
+        assert models.ReviewResponse.objects.filter(
+            response_to=device_review.author,
+            title="Test title",
+            content="Test content"
+        ).exists()
 
 
     def test_POST_check_review_api_status_404(self,validator_client,device_review):
@@ -72,10 +77,14 @@ class TestCheckReviewApi:
         data = {
             "title": "Test title",
             "content": "Test content",
-            "response_to": device_review.author
         }
         response = client.post(url,data=data)
         assert response.status_code == status.HTTP_404_NOT_FOUND
+        assert not models.ReviewResponse.objects.filter(
+            response_to=device_review.author,
+            title="Test title",
+            content="Test content"
+        ).exists()
 
 
     def test_POST_check_review_api_status_403(self,admin_client,device_review):
@@ -84,10 +93,14 @@ class TestCheckReviewApi:
         data = {
             "title": "Test title",
             "content": "Test content",
-            "response_to": device_review.author
         }
         response = client.post(url,data=data)
         assert response.status_code == status.HTTP_403_FORBIDDEN
+        assert not models.ReviewResponse.objects.filter(
+            response_to=device_review.author,
+            title="Test title",
+            content="Test content"
+        ).exists()
 
 
     def test_POST_check_review_api_status_401(self,device_review):
@@ -96,7 +109,11 @@ class TestCheckReviewApi:
         data = {
             "title": "Test title",
             "content": "Test content",
-            "response_to": device_review.author
         }
         response = client.post(url,data=data)
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
+        assert not models.ReviewResponse.objects.filter(
+            response_to=device_review.author,
+            title="Test title",
+            content="Test content"
+        ).exists()

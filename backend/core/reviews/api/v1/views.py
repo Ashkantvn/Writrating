@@ -3,7 +3,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from reviews import models
 from reviews.api.v1 import serializers
-from core.permissions import IsAuthenticatedAndAdmin, IsAuthor
+from core.permissions import IsAuthenticatedAndAdmin, IsAuthor, IsValidator
+from rest_framework.permissions import IsAuthenticated
 
 class ReviewsListAPIView(APIView):
     
@@ -171,6 +172,61 @@ class ReviewEditAPIView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
     
 class ReviewCheckAPIView(APIView):
-    pass
+    permission_classes = [IsAuthenticated,IsValidator]
+    
+    def patch(self, request, slug):
+        """
+        PATCH /api/v1/reviews/check/{slug}/
+
+        Checks a review by slug.
+
+        This method checks a review based on the provided slug. It checks for a review
+        among device, processor, graphics processor, and operating system reviews. If a review
+        is found, it is checked and returned. If no review is found, a 404 response is returned.
+
+        :param request: The HTTP request object.
+        :param slug: The unique slug identifying the review.
+        :return: A Response object containing serialized review data or a 404 error message.
+        :rtype: Response
+        """
+        device_review = models.DeviceReview.objects.filter(slug=slug).first()
+        processor_review = models.ProcessorReview.objects.filter(slug=slug).first()
+        graphics_processor_review = models.GraphicsProcessorReview.objects.filter(slug=slug).first()
+        operating_system_review = models.OperatingSystemReview.objects.filter(slug=slug).first()
+
+
+        review = device_review or processor_review or graphics_processor_review or operating_system_review
+        if not review:
+            return Response({'detail': 'No review found'}, status=status.HTTP_404_NOT_FOUND)
+        
+        # Check obj level permission
+        self.check_object_permissions(request=request, obj=device_review or processor_review or graphics_processor_review or operating_system_review)
+        
+        serializer = serializers.CheckReviewSerializer(partial=True,data=request.data,instance=review)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    def post(self, request, slug):
+        device_review = models.DeviceReview.objects.filter(slug=slug).first()
+        processor_review = models.ProcessorReview.objects.filter(slug=slug).first()
+        graphics_processor_review = models.GraphicsProcessorReview.objects.filter(slug=slug).first()
+        operating_system_review = models.OperatingSystemReview.objects.filter(slug=slug).first()
+
+        review = device_review or processor_review or graphics_processor_review or operating_system_review
+        if not review:
+            return Response({'detail': 'No review found'}, status=status.HTTP_404_NOT_FOUND)
+        
+        # Check obj level permission
+        self.check_object_permissions(request=request, obj=review)
+        
+        serializer = serializers.ReviewResponseSerializer(data=request.data, context = {"user": request.user,"response_to":review.author})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+
 
 

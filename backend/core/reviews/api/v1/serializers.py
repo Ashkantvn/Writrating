@@ -103,3 +103,45 @@ class EditReviewSerializer(serializers.Serializer):
         instance.save()
 
         return instance
+
+
+class CheckReviewSerializer(serializers.Serializer):
+    publishable = serializers.BooleanField()
+
+    def update(self, instance, validated_data):
+        instance.publishable = validated_data.get('publishable',instance.publishable)
+
+        instance.save()
+
+        return instance
+    
+
+class ReviewResponseSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = models.ReviewResponse
+        exclude = ['created_at','updated_at','author','response_to']
+
+    def create(self, validated_data):
+        user = self.context.get("user")
+        response_to = self.context.get("response_to")
+
+        # set author
+        if not user:
+            raise serializers.ValidationError(
+                detail="A valid user profile is required to create a review."
+            )
+        else:
+            author = AccountModels.Profile.objects.get(user=user)
+            validated_data["author"] = author
+
+        # set response_to
+        if response_to.pk:
+            validated_data["response_to"] = response_to
+        else:
+            raise serializers.ValidationError(
+                detail="A valid reviewer is required to create a response."
+            )
+        
+
+        return models.ReviewResponse.objects.create(**validated_data)
