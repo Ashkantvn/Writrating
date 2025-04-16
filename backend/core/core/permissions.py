@@ -35,15 +35,7 @@ class IsAuthor(BasePermission):
 
 class IsValidator(BasePermission):
     def has_permission(self, request, view):
-        return (
-            request.user
-            and request.user.is_authenticated
-            and getattr(request.user, "is_validator", False)
-        )
+        return getattr(request.user, "is_validator", False)
 
     def has_object_permission(self, request, view, obj):
-        return (
-            request.user
-            and request.user.is_authenticated
-            and getattr(request.user, "is_validator", False)
-        )
+        return getattr(request.user, "is_validator", False)

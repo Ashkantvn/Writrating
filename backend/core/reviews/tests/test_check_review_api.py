@@ -48,7 +48,7 @@ class TestCheckReviewApi:
             "publishable": True,
         }
         response = client.patch(url,data=data)
-        assert response.status_code == status.HTTP_403_FORBIDDEN
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
         device_review.refresh_from_db()
         assert not device_review.publishable
 
