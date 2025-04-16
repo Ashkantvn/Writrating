@@ -30,3 +30,8 @@ class TestReviewUrls:
         url = reverse("reviews:edit", args=["test-slug"])
         view_class = resolve(url).func.view_class
         assert view_class == views.ReviewEditAPIView
+
+    def test_review_check_is_resolved(self):
+        url = reverse("reviews:check", args=["test-slug"])
+        view_class = resolve(url).func.view_class
+        assert view_class == views.ReviewCheckAPIView

@@ -9,4 +9,5 @@ urlpatterns = [
     path("<str:slug>/", views.ReviewDetailsAPIView.as_view(), name="details"),
     path("<str:slug>/delete/", views.ReviewDeleteAPIView.as_view(), name="delete"),
     path("<str:slug>/edit/", views.ReviewEditAPIView.as_view(), name="edit"),
+    path("<str:slug>/check/", views.ReviewCheckAPIView.as_view(), name="check"),
 ]

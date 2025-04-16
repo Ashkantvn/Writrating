@@ -98,6 +98,20 @@ class ReviewDeleteAPIView(APIView):
     permission_classes = [IsAuthenticatedAndAdmin,IsAuthor]
 
     def delete(self, request, slug):
+        """
+        Delete a review by slug.
+
+        This method deletes a review identified by the provided slug. It attempts to find
+        the review among device, processor, graphics processor, and operating system reviews. 
+        If a review is found, object-level permissions are checked, and the review is deleted. 
+        If no review is found, a 404 response is returned.
+
+        :param request: The HTTP request object.
+        :param slug: The unique slug identifying the review to be deleted.
+        :return: A Response object with a success message and a 204 status code if deleted, 
+                or a 404 error message if no review is found.
+        :rtype: Response
+        """
         device_review = models.DeviceReview.objects.filter(slug=slug).first()
         processor_review = models.ProcessorReview.objects.filter(slug=slug).first()
         graphics_processor_review = models.GraphicsProcessorReview.objects.filter(slug=slug).first()
@@ -125,6 +139,19 @@ class ReviewEditAPIView(APIView):
 
 
     def patch(self, request, slug):
+        """
+        Edit a review by slug.
+
+        This method updates a review based on the provided slug. It checks for a review
+        among device, processor, graphics processor, and operating system reviews. If a review
+        is found, it is updated with the provided data and returned. If no review is found, a 404
+        response is returned.
+
+        :param request: The HTTP request object.
+        :param slug: The unique slug identifying the review.
+        :return: A Response object containing serialized review data or a 404 error message.
+        :rtype: Response
+        """
         device_review = models.DeviceReview.objects.filter(slug=slug).first()
         processor_review = models.ProcessorReview.objects.filter(slug=slug).first()
         graphics_processor_review = models.GraphicsProcessorReview.objects.filter(slug=slug).first()
@@ -142,5 +169,8 @@ class ReviewEditAPIView(APIView):
         serializer.save()
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class ReviewCheckAPIView(APIView):
+    pass
 
 
