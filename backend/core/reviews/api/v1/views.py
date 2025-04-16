@@ -121,4 +121,26 @@ class ReviewDeleteAPIView(APIView):
         return Response({'detail': 'Review deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
     
 class ReviewEditAPIView(APIView):
-    pass
+    permission_classes = [IsAuthenticatedAndAdmin,IsAuthor]
+
+
+    def patch(self, request, slug):
+        device_review = models.DeviceReview.objects.filter(slug=slug).first()
+        processor_review = models.ProcessorReview.objects.filter(slug=slug).first()
+        graphics_processor_review = models.GraphicsProcessorReview.objects.filter(slug=slug).first()
+        operating_system_review = models.OperatingSystemReview.objects.filter(slug=slug).first()
+
+        review = device_review or processor_review or graphics_processor_review or operating_system_review
+        if not review:
+            return Response({'detail': 'No review found'}, status=status.HTTP_404_NOT_FOUND)
+        
+        # Check obj level permission
+        self.check_object_permissions(request=request, obj=review)
+
+        serializer = serializers.EditReviewSerializer(partial=True,data=request.data,instance=review)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+

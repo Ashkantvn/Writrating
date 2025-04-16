@@ -86,6 +86,20 @@ class AddReviewSerializer(serializers.Serializer):
                 validated_data["target"] = target
                 return models.OperatingSystemReview.objects.create(**validated_data)
 
+class EditReviewSerializer(serializers.Serializer):
+    review_text = serializers.CharField()
+    rating = serializers.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(10)])
+    buying_worth = serializers.CharField()
+    published_date = serializers.DateField()
+    status = serializers.CharField()
 
+    def update(self, instance, validated_data):
+        instance.review_text = validated_data.get('review_text',instance.review_text)
+        instance.rating = validated_data.get('rating',instance.rating)
+        instance.published_date = validated_data.get('published_date',instance.published_date)
+        instance.buying_worth = validated_data.get('buying_worth',instance.buying_worth)
+        instance.status = validated_data.get('status',instance.status)
 
+        instance.save()
 
+        return instance
