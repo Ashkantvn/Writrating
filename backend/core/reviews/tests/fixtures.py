@@ -228,3 +228,18 @@ def authenticated_client():
     yield client
     if user.pk:
         user.delete()
+
+# Validator
+@pytest.fixture
+def validator_client():
+    user = User.objects.create(
+        email="test2kjihj@test.com",
+        password="asdoijfopamwv@#$235",
+        is_validator=True,
+        is_active=True,
+    )
+    client = APIClient()
+    client.force_authenticate(user=user)
+    yield client
+    if user.pk:
+        user.delete()
