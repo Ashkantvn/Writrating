@@ -37,3 +37,15 @@ class IsValidator(BasePermission):
 
     def has_object_permission(self, request, view, obj):
         return getattr(request.user, "is_validator", False)
+    
+
+class IsValidatorForGET(BasePermission):
+    def has_permission(self, request, view):
+        if request.method == "GET" and getattr(request.user, "is_validator", False)==False:
+            return False
+        return True
+
+    def has_object_permission(self, request, view, obj):
+        if request.method == "GET" and getattr(request.user, "is_validator", False)==False:
+            return False
+        return True

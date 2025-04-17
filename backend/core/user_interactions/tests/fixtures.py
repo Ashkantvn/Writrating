@@ -2,6 +2,7 @@ import pytest
 from django.contrib.auth import get_user_model
 from rest_framework.test import APIClient
 from devices import models as DevicesModel
+from user_interactions import models as UserInteractionsModel
 
 User = get_user_model()
 
@@ -12,6 +13,50 @@ def authenticated_client():
         email="test23032948@test.com",
         password="apoifmewo2#$@#$t08",
         is_active=True,
+    )
+
+    client = APIClient()
+
+    client.force_authenticate(
+        user=user,
+    )
+    client.force_login(user=user)
+
+    yield client
+    if user.pk:
+        user.delete()
+
+# Admin client
+
+@pytest.fixture
+def admin_client():
+    user = User.objects.create_user(
+        email="test23032948@test.com",
+        password="apoifmewo2#$@#$t08",
+        is_active=True,
+        is_admin=True,
+        is_validator=False
+    )
+
+    client = APIClient()
+
+    client.force_authenticate(
+        user=user,
+    )
+    client.force_login(user=user)
+
+    yield client
+    if user.pk:
+        user.delete()
+
+# Validator client
+@pytest.fixture
+def validator_client():
+    user = User.objects.create_user(
+        email="test23032948@test.com",
+        password="apoifmewo2#$@#$t08",
+        is_active=True,
+        is_validator=True
     )
 
     client = APIClient()
@@ -182,3 +227,15 @@ def second_device():
     yield device
     if device.pk:
         device.delete()
+
+
+# Report 
+@pytest.fixture
+def report():
+    report = UserInteractionsModel.Report.objects.create(
+        report_title="Test Report",
+        report_content="Test Content",
+    )
+    yield report
+    if report.pk:
+        report.delete()
