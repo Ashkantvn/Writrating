@@ -32,6 +32,7 @@ urlpatterns = [
     path("api/v1/blogs/", include("blogs.api.v1.urls")),
     path("api/v1/devices/", include('devices.api.v1.urls')),
     path("api/v1/reviews/", include("reviews.api.v1.urls")),
+    path("api/v1/user-interactions/", include("user_interactions.api.v1.urls")),
     # swagger urls
     path(
         "swagger<format>/", schema_view.without_ui(cache_timeout=0), name="schema-json"
