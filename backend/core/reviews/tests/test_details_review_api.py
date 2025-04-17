@@ -4,6 +4,7 @@ from django.urls import reverse
 from rest_framework import status
 from reviews.tests.fixtures import device_review
 
+
 @pytest.mark.django_db
 class TestDetailsReviewAPI:
     def test_GET_review_status_200(self, device_review):
@@ -11,7 +12,6 @@ class TestDetailsReviewAPI:
         url = reverse("reviews:details", args=[device_review.slug])
         reponse = client.get(url)
         assert reponse.status_code == status.HTTP_200_OK
-        
 
     def test_GET_review_status_404(self):
         client = APIClient()

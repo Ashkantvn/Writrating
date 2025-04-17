@@ -3,7 +3,6 @@ from django.db import models
 from devices import models as DevicesModel
 
 
-
 class GraphicsProcessorReview(Review):
     target = models.ForeignKey(DevicesModel.GraphicProcessor, on_delete=models.CASCADE)
 

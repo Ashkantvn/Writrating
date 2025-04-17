@@ -36,15 +36,12 @@ class TestDeleteReviewApi:
         client = APIClient()
         user = User.objects.create(
             email="4qZfO@example.com",
-            password = "jasdnoifnav@#$%134234",
+            password="jasdnoifnav@#$%134234",
             is_admin=True,
-            is_active=True
+            is_active=True,
         )
         client.force_authenticate(user=user)
         url = reverse("reviews:delete", args=[device_review.slug])
         response = client.delete(url)
         assert response.status_code == status.HTTP_403_FORBIDDEN
         assert models.DeviceReview.objects.filter(slug=device_review.slug).exists()
-
-    
-    

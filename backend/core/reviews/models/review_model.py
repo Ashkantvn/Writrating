@@ -2,9 +2,12 @@ from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.text import slugify
 
+
 class Review(models.Model):
     author = models.ForeignKey("accounts.Profile", on_delete=models.CASCADE)
-    rating = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(10)])
+    rating = models.IntegerField(
+        validators=[MinValueValidator(0), MaxValueValidator(10)]
+    )
     status = models.BooleanField(default=False)
     view_count = models.PositiveIntegerField(default=0)
     buying_worth = models.CharField(max_length=255)
@@ -18,7 +21,7 @@ class Review(models.Model):
 
     class Meta:
         abstract = True
-        app_label = 'reviews'
+        app_label = "reviews"
 
     def save(self, *args, **kwargs):
         if not self.slug:
