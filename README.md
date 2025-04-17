@@ -17,7 +17,6 @@
 - **User Authentication**:login and registration system for managing user accounts.
 - **User Roles and Permissions**: Different levels of access and control based on user roles (Guest, Normal User, Admin, Superuser, Validator).
 - **Responsive Design**: Fully responsive design to ensure optimal viewing experience on various devices.
-- **Commenting System**: Engage with the community through comments on reviews and blog posts.
 - **Content Management**: Admins can create, edit, and manage their own blogs and reviews.
 
 ## User Roles and Permissions
@@ -29,7 +28,7 @@
 ### Normal Users
 - **Permissions**:
   - View information about digital devices.
-  - Send comments, and reports.
+  - and reports.
   - Compare devices.
 
 ### Admins
