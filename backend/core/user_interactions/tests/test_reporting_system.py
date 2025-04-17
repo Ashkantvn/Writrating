@@ -1,10 +1,15 @@
-import pytest 
+import pytest
 from django.urls import reverse, resolve
 from rest_framework import status
 from user_interactions.api.v1 import views
 from rest_framework.test import APIClient
-from user_interactions.tests.fixtures import authenticated_client,validator_client,admin_client
+from user_interactions.tests.fixtures import (
+    authenticated_client,
+    validator_client,
+    admin_client,
+)
 from user_interactions import models
+
 
 @pytest.mark.django_db
 class TestReportingSystem:
@@ -54,8 +59,3 @@ class TestReportingSystem:
         url = reverse("interactions:report")
         response = client.get(url)
         assert response.status_code == status.HTTP_403_FORBIDDEN
-
-
-    
-
-    
