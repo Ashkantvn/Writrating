@@ -30,7 +30,7 @@ urlpatterns = [
     # apps urls
     path("api/v1/accounts/", include("accounts.api.v1.urls")),
     path("api/v1/blogs/", include("blogs.api.v1.urls")),
-    path("api/v1/devices/", include('devices.api.v1.urls')),
+    path("api/v1/devices/", include("devices.api.v1.urls")),
     path("api/v1/reviews/", include("reviews.api.v1.urls")),
     path("api/v1/interactions/", include("user_interactions.api.v1.urls")),
     # swagger urls

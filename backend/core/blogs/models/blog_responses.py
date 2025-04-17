@@ -1,6 +1,4 @@
 from core.models import Response
-from accounts.models import Profile
-from django.db import models
 
 
 class BlogResponse(Response):

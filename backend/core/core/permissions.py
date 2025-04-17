@@ -1,12 +1,10 @@
 from rest_framework import permissions
+from rest_framework.permissions import BasePermission
 
 
 class IsSuperUser(permissions.BasePermission):
     def has_permission(self, request, view):
         return request.user and request.user.is_superuser
-
-
-from rest_framework.permissions import BasePermission
 
 
 class IsAuthenticatedAndAdmin(BasePermission):
