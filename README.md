@@ -47,5 +47,4 @@
   - Review and validate data to ensure it meets publication standards.
 
 ## Technologies Used
-- **Backend**: Django, Django REST Framework
-- **Frontend**: React, Next
+- Django, Django REST Framework
