@@ -1,9 +1,0 @@
-# Django and DRF
-django==5.2.7
-djangorestframework
-
-# simplejwt
-djangorestframework-simplejwt
-
-# Documentation
-drf-spectacular

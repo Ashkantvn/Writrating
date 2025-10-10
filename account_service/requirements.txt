@@ -1,0 +1,29 @@
+# Django and REST Framework
+django==5.2.7
+djangorestframework
+djangorestframework-simplejwt
+
+# API Documentation
+drf-spectacular
+
+# Environment Variables
+python-decouple
+
+# Database (PostgreSQL)
+psycopg2-binary
+
+# Redis / Caching / Celery
+redis               
+django-redis
+
+# Reformat code
+black
+flake8
+
+# Code Quality / Formatting
+black
+flake8
+
+# Testing
+pytest
+pytest-django
