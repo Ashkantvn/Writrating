@@ -16,6 +16,7 @@ ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="localhost").split(",")
 INSTALLED_APPS = [
     'api',
     'rest_framework',
+    'rest_framework_simplejwt.token_blacklist',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
