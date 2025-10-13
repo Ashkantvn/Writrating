@@ -115,3 +115,5 @@ CACHES = {
         "KEY_PREFIX": "account_service"
     }
 }
+
+AUTH_USER_MODEL = "api.CustomUser"
