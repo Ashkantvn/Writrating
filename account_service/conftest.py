@@ -17,7 +17,7 @@ def custom_user(db):
 @pytest.fixture()
 def access_token_blacklist(db):
     blacklist = AccessTokenBlacklist.objects.create(
-        code="wodjamlwijef@#$2323"
+        jti="wodjamlwijef@#$2323"
     )
     yield blacklist
     if blacklist.pk:
