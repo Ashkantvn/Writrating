@@ -4,9 +4,13 @@ from rest_framework import status
 from api.v1.serializers import VerifyAccessTokenSerializer
 
 class Logout(APIView):
+    # Check user is not bot
+    # rate limit
+    # agent header
     pass
 
 class SignUp(APIView):
+    # Check user is not bot
     pass
 
 class VerifyAccessToken(APIView):
