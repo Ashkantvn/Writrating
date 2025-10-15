@@ -36,7 +36,6 @@ class TestSignUp:
         )
         assert string_refresh_token, "Refresh token must be string"
         # Check user is created
-        User.refresh_from_db()
         user_created = User.objects.filter(username=data["username"]).exists()
         assert user_created , "User does not created."
 

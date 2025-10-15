@@ -5,7 +5,8 @@ from rest_framework_simplejwt.views import(
 from api.v1.views import(
     Logout,
     SignUp,
-    VerifyAccessToken
+    VerifyAccessToken,
+    Login
 )
 from django.urls import path
 
@@ -17,4 +18,5 @@ urlpatterns = [
     path("token/verify/", VerifyAccessToken.as_view(), name="verify_access_token"),
     path("token/signup/", SignUp.as_view(), name="signup"),
     path("token/logout/", Logout.as_view(), name="logout"),
+    path("token/login/", Login.as_view(), name="login"),
 ]

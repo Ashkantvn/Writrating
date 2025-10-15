@@ -16,7 +16,7 @@ class TestLoginView:
         }
         response= self.client.post(self.url,data)
         assert response.status_code == status.HTTP_200_OK
-        keys = response.data.keys()
+        keys = response.data.get("data").keys()
         assert "access_token" in keys, "response must have access token"
         assert "refresh_token" in keys, "response must have refresh token"
 

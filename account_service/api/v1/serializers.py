@@ -1,11 +1,30 @@
 from rest_framework import serializers
 from api.models import AccessTokenBlacklist
 from rest_framework_simplejwt.tokens import AccessToken, TokenError
+from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
+
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField()
+
+    def validate(self, attrs):
+        username = attrs.get("username")
+        password = attrs.get("password")
+        authenticated_user = authenticate(username=username,password=password)
+        if authenticated_user is None:
+            raise serializers.ValidationError(
+                {
+                    "detail":"Password is incorrect."
+                }
+            )
+        return attrs
+
+
 
 class VerifyAccessTokenSerializer(serializers.Serializer):
     access_token = serializers.CharField()
