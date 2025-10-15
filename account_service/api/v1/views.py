@@ -5,7 +5,6 @@ from api.v1.serializers import VerifyAccessTokenSerializer
 
 class Logout(APIView):
     # Check user is not bot
-    # rate limit
     # agent header
     pass
 
