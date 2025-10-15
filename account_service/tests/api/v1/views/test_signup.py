@@ -2,6 +2,9 @@ import pytest
 from rest_framework import status
 from rest_framework.test import APIClient
 from django.urls import reverse
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 @pytest.mark.django_db
 class TestSignUp:
@@ -22,16 +25,20 @@ class TestSignUp:
         assert response.status_code == status.HTTP_201_CREATED
         # Check access token
         string_access_token = isinstance(
-            response.data["data"]["access"],
+            response.data["data"]["access_token"],
             str
         )
         assert string_access_token, "Access token must be string"
         # Check refresh token
         string_refresh_token = isinstance(
-            response.data["data"]["refresh"],
+            response.data["data"]["refresh_token"],
             str
         )
         assert string_refresh_token, "Refresh token must be string"
+        # Check user is created
+        User.refresh_from_db()
+        user_created = User.objects.filter(username=data["username"]).exists()
+        assert user_created , "User does not created."
 
     def test_POST_signup_exist_user_status_400(self,custom_user):
         data={
