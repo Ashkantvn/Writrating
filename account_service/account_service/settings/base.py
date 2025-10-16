@@ -125,3 +125,8 @@ CACHES = {
 }
 
 AUTH_USER_MODEL = "api.CustomUser"
+
+SIMPLE_JWT={
+    'BLACKLIST_AFTER_ROTATION': True,
+    'ROTATE_REFRESH_TOKENS': True,
+}
