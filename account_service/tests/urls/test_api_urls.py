@@ -38,4 +38,8 @@ class TestAccountUrls:
         view_class= resolve(url).func.view_class
         assert view_class == views.SignUp
 
+    def test_change_pass_is_resolve(self):
+        url = reverse("api:v1:change-pass")
+        view_class= resolve(url).func.view_class
+        assert view_class == views.ChangePass
     

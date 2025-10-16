@@ -6,7 +6,8 @@ from api.v1.views import(
     Logout,
     SignUp,
     VerifyAccessToken,
-    Login
+    Login,
+    ChangePass
 )
 from django.urls import path
 
@@ -19,4 +20,5 @@ urlpatterns = [
     path("token/signup/", SignUp.as_view(), name="signup"),
     path("token/logout/", Logout.as_view(), name="logout"),
     path("token/login/", Login.as_view(), name="login"),
+    path("token/change-pass/", ChangePass.as_view(), name="change-pass"),
 ]
