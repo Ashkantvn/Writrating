@@ -1,1 +1,2 @@
 from .create_profile import CreateProfileSerializer
+from .device_list import DeviceListSerializer
