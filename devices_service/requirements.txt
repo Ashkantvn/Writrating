@@ -12,6 +12,10 @@ python-decouple
 # Database (PostgreSQL)
 psycopg2-binary
 
+# Redis / Caching / Celery
+redis               
+django-redis
+
 # Code Quality / Formatting
 black
 flake8
