@@ -3,3 +3,4 @@ from .signup_serializer import SignUpSerializer
 from .verify_access_token_serializer import VerifyAccessTokenSerializer
 from .logout_serializer import LogoutSerializer
 from .change_pass_serializer import ChangePasswordSerializer
+from .custom_token_obtain_serialzier import CustomTokenObtainPairSerializer

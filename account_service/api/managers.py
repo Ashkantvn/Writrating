@@ -15,6 +15,7 @@ class CustomUserManager(BaseUserManager):
 
         user = self.model(
             username=username,
+            is_active=True,
             **extra_fields
         )
         user.set_password(password)

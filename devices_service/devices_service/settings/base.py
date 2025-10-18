@@ -42,7 +42,7 @@ ROOT_URLCONF = 'devices_service.urls'
 # Rest framework
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'devices_service.authentication.StatelessJWTAuthentication',
     ),
     'DEFAULT_THROTTLE_CLASSES': [
         'api.throttles.BurstRateThrottle',
