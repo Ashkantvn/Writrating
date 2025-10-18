@@ -18,6 +18,7 @@ ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="localhost").split(",")
 INSTALLED_APPS = [
     'api',
     'rest_framework',
+    'drf_spectacular',
     'rest_framework_simplejwt.token_blacklist',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -50,7 +51,8 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_THROTTLE_RATES': {
         'burst': '15/minute',
-    }
+    },
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema'
 }
 
 TEMPLATES = [

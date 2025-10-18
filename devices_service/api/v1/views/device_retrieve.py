@@ -6,6 +6,7 @@ from rest_framework import status
 from django.db.models import Avg
 from api.v1.serializers import DeviceSerializer,RateSerializer
 from api.models import DeviceRate
+from django.core.cache import cache
 
 class DeviceRetrieveView(APIView):
     def get(self,request,device_slug):
@@ -30,6 +31,7 @@ class DeviceRetrieveView(APIView):
         )
 
     def post(self, request, device_slug):
+        # Ensure the user is authenticated before allowing rating
         if not request.user.is_authenticated:
             return Response(
                 data={
@@ -37,9 +39,13 @@ class DeviceRetrieveView(APIView):
                 },
                 status=status.HTTP_401_UNAUTHORIZED
             )
+
+        # Get or create a Profile for the current user (based on username)
         profile = Profile.objects.get_or_create(
             username=request.user.username
         )[0]
+
+        # Retrieve the target device, return 404 if it doesn't exist
         try:
             device = Device.objects.get(device_slug=device_slug)
         except ObjectDoesNotExist:
@@ -49,23 +55,35 @@ class DeviceRetrieveView(APIView):
                 },
                 status=status.HTTP_404_NOT_FOUND
             )
+
+        # Validate incoming rating data; pass profile in context for serializer usage
         serializer = RateSerializer(data=request.data, context={"profile": profile})
         if serializer.is_valid():
+            cache.delete("device_list")
+            # Check if this profile has already rated this device
             device_rate = DeviceRate.objects.filter(device=device, rate__profile=profile)
             if device_rate.exists():
+                # If an old rating exists: keep a reference, save the new Rate,
+                # update the DeviceRate relation to point to the new Rate,
+                # then delete the old Rate object to avoid duplicates.
                 old_rate = device_rate.first().rate
                 serializer.save()
                 device_rate.update(rate=serializer.instance)
                 old_rate.delete()
             else:
+                # No previous rating: create the Rate and link it to the device
                 serializer.save()
                 DeviceRate.objects.create(device=device, rate=serializer.instance)
+
+            # Success response after creating/updating the rating
             return Response(
                 data={
                     "data": "Device rated successfully."
                 },
                 status=status.HTTP_201_CREATED
             )
+
+        # Invalid rating value; return a helpful error message
         return Response(
             data={
                 "detail":

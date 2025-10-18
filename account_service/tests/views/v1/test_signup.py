@@ -23,18 +23,7 @@ class TestSignUp:
             data
         )
         assert response.status_code == status.HTTP_201_CREATED
-        # Check access token
-        string_access_token = isinstance(
-            response.data["data"]["access_token"],
-            str
-        )
-        assert string_access_token, "Access token must be string"
-        # Check refresh token
-        string_refresh_token = isinstance(
-            response.data["data"]["refresh_token"],
-            str
-        )
-        assert string_refresh_token, "Refresh token must be string"
+        assert response.data.get("data") == "User created successfully."
         # Check user is created
         user_created = User.objects.filter(username=data["username"]).exists()
         assert user_created , "User does not created."

@@ -14,7 +14,7 @@ class VerifyAccessToken(APIView):
         if serializer.is_valid():
             return Response(
                 data={
-                    "data": serializer.validated_data["access_token"]
+                    "data": "Token is valid."
                 },
                 status=status.HTTP_200_OK
             )

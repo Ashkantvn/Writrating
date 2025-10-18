@@ -1,7 +1,6 @@
 import pytest
 from django.urls import reverse, resolve
 from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
     TokenRefreshView,
 )
 from api.v1 import views
@@ -11,7 +10,7 @@ class TestAccountUrls:
     def test_token_obtain_url_is_resolved(self):
         url = reverse("api:v1:token_obtain_pair")
         view_class= resolve(url).func.view_class
-        assert view_class == TokenObtainPairView
+        assert view_class == views.CustomTokenObtainPairView
 
     def test_refresh_token_is_resolved(self):
         url = reverse("api:v1:token_refresh")
@@ -28,11 +27,6 @@ class TestAccountUrls:
         view_class= resolve(url).func.view_class
         assert view_class == views.Logout
 
-    def test_logout_token_is_resolved(self):
-        url = reverse("api:v1:login")
-        view_class= resolve(url).func.view_class
-        assert view_class == views.Login
-
     def test_sign_up_is_resolve(self):
         url = reverse("api:v1:signup")
         view_class= resolve(url).func.view_class
@@ -43,3 +37,7 @@ class TestAccountUrls:
         view_class= resolve(url).func.view_class
         assert view_class == views.ChangePass
     
+    def test_delete_account_is_resolve(self):
+        url = reverse("api:v1:delete_account")
+        view_class= resolve(url).func.view_class
+        assert view_class == views.DeleteAccount

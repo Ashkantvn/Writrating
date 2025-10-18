@@ -17,7 +17,7 @@ class TestVerifyAccessToken:
         }
         response = self.client.post(self.url,data)
         assert response.status_code == status.HTTP_200_OK
-        assert response.data["data"] == str(access_token)
+        assert response.data["data"] == "Token is valid."
 
     def test_POST_status_400(self):
         data={
