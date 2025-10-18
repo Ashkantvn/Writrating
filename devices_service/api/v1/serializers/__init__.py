@@ -1,2 +1,2 @@
 from .device_list import DeviceListSerializer
-from .device_serializer import DeviceSerializer
+from .device_retrieve_serializer import DeviceSerializer, RateSerializer
