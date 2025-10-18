@@ -1,3 +1,6 @@
+public.pem
+private.pem
+
 Makefile
 # Python
 __pycache__/

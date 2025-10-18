@@ -1,3 +1,4 @@
+from datetime import timedelta
 from pathlib import Path
 from decouple import config
 
@@ -127,4 +128,10 @@ CACHES = {
 SIMPLE_JWT={
     'BLACKLIST_AFTER_ROTATION': True,
     'ROTATE_REFRESH_TOKENS': True,
+}
+
+SIMPLE_JWT = {
+    "ALGORITHM": "RS256",
+    "VERIFYING_KEY": open(BASE_DIR / "public.pem").read(),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
 }
