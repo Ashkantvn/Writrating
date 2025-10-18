@@ -1,1 +1,2 @@
 from .device_list import DeviceListSerializer
+from .device_serializer import DeviceSerializer

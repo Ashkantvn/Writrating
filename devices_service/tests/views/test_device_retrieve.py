@@ -42,7 +42,7 @@ class TestDeviceRetrieve:
         url = reverse("api:v1:retrieve",args=[device.device_slug])
         response = self.client.get(url)
         assert response.status_code == status.HTTP_200_OK
-        assert "device" in response.data.get("device")
+        assert "device" in response.data.get("data")
 
     def test_GET_device_retrieve_status_404(self):
         url = reverse("api:v1:retrieve",args=["device"])
