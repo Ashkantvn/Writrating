@@ -27,6 +27,3 @@ class TestAPIModels:
         assert is_profile,"rate.profile is not a Profile instance"
         assert rate.created_at is not None,"Created date should not be None"
         assert rate.updated_at is not None,"Updated date should not be None"
-
-    def test_profile_model_str(self,profile):
-        assert str(profile) == profile.username

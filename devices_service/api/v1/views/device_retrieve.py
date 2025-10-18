@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.db.models import Avg
 from api.v1.serializers import DeviceSerializer,RateSerializer
+from api.models import DeviceRate
 
 class DeviceRetrieveView(APIView):
     def get(self,request,device_slug):
@@ -50,8 +51,15 @@ class DeviceRetrieveView(APIView):
             )
         serializer = RateSerializer(data=request.data, context={"profile": profile})
         if serializer.is_valid():
-            serializer.save()
-            device.rates.add(serializer.instance)
+            device_rate = DeviceRate.objects.filter(device=device, rate__profile=profile)
+            if device_rate.exists():
+                old_rate = device_rate.first().rate
+                serializer.save()
+                device_rate.update(rate=serializer.instance)
+                old_rate.delete()
+            else:
+                serializer.save()
+                DeviceRate.objects.create(device=device, rate=serializer.instance)
             return Response(
                 data={
                     "data": "Device rated successfully."
