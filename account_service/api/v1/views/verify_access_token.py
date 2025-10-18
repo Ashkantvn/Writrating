@@ -3,25 +3,20 @@ from api.v1.serializers import VerifyAccessTokenSerializer
 from rest_framework.response import Response
 from rest_framework import status
 
+
 class VerifyAccessToken(APIView):
     def post(self, request):
-        access_token= request.data.get("access_token")
+        access_token = request.data.get("access_token")
         serializer = VerifyAccessTokenSerializer(
-            data={
-                "access_token":access_token
-            }
+            data={"access_token": access_token}
         )
         if serializer.is_valid():
             return Response(
-                data={
-                    "data": serializer.validated_data["access_token"]
-                },
+                data={"data": "Token is valid."},
                 status=status.HTTP_200_OK
             )
         else:
             return Response(
-                data={
-                    "detail": "Invalid token."
-                },
+                data={"detail": "Invalid token."},
                 status=status.HTTP_400_BAD_REQUEST
             )

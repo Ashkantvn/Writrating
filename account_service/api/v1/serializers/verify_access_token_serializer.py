@@ -3,6 +3,7 @@ from rest_framework_simplejwt.tokens import AccessToken
 from rest_framework_simplejwt.exceptions import TokenError
 from api.models import AccessTokenBlacklist
 
+
 class VerifyAccessTokenSerializer(serializers.Serializer):
     access_token = serializers.CharField()
 
@@ -15,7 +16,9 @@ class VerifyAccessTokenSerializer(serializers.Serializer):
             jti = token.get("jti")
 
             if AccessTokenBlacklist.objects.filter(jti=jti).exists():
-                raise serializers.ValidationError("Token has been blacklisted.")
+                raise serializers.ValidationError(
+                    "Token has been blacklisted."
+                )
 
         except TokenError:
             raise serializers.ValidationError("Invalid or expired token.")

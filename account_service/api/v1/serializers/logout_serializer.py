@@ -3,6 +3,7 @@ from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
 from api.models import AccessTokenBlacklist
 
+
 class LogoutSerializer(serializers.Serializer):
     access_token = serializers.CharField()
     refresh_token = serializers.CharField()
@@ -16,16 +17,14 @@ class LogoutSerializer(serializers.Serializer):
             access_token.check_exp()
             refresh_token.check_exp()
 
-            _=access_token.payload
-            _=refresh_token.payload
+            _ = access_token.payload
+            _ = refresh_token.payload
 
             jti = access_token.get("jti")
             if AccessTokenBlacklist.objects.filter(jti=jti).exists():
-                raise serializers.ValidationError({"detail":"Invalid token."})
-            
+                raise serializers.ValidationError({"detail": "Invalid token."})
+
         except TokenError:
-            raise serializers.ValidationError({
-                "detail":"Invalid token."
-            })
+            raise serializers.ValidationError({"detail": "Invalid token."})
         attrs["access_token_obj"] = access_token
         return attrs

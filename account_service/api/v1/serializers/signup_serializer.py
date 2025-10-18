@@ -4,14 +4,15 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 
 User = get_user_model()
-    
+
+
 class SignUpSerializer(serializers.ModelSerializer):
     username = serializers.CharField(write_only=True)
     password = serializers.CharField(write_only=True)
     password_confirm = serializers.CharField(write_only=True)
 
     class Meta:
-        model=User
+        model = User
         fields = ["username", "password", "password_confirm"]
 
     def validate(self, attrs):
@@ -24,16 +25,14 @@ class SignUpSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({"detail": "User exists."})
         # Check password and password confirm are the same
         if password != password_confirm:
-            raise serializers.ValidationError({
-                "detail":"Password and password confirm mismatch."
-            })
+            raise serializers.ValidationError(
+                {"detail": "Password and password confirm mismatch."}
+            )
         # Check password
         try:
             validate_password(password=password)
         except ValidationError:
-            raise serializers.ValidationError({
-                "detail":"Weak password."
-            })
+            raise serializers.ValidationError({"detail": "Weak password."})
         return attrs
 
     def create(self, validated_data):

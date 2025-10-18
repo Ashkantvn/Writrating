@@ -5,6 +5,7 @@ from rest_framework.test import APIClient
 
 User = get_user_model()
 
+
 @pytest.fixture()
 def custom_user(db):
     user = User.objects.create_user(
@@ -15,6 +16,7 @@ def custom_user(db):
     if user.pk:
         user.delete()
 
+
 @pytest.fixture()
 def access_token_blacklist(db):
     blacklist = AccessTokenBlacklist.objects.create(
@@ -23,6 +25,7 @@ def access_token_blacklist(db):
     yield blacklist
     if blacklist.pk:
         blacklist.delete()
+
 
 @pytest.fixture()
 def authenticated_client(db):
@@ -36,4 +39,3 @@ def authenticated_client(db):
     yield client
     if user.pk:
         user.delete()
-

@@ -1,12 +1,13 @@
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.exceptions import InvalidToken
-from django.contrib.auth.models import AnonymousUser
+
 
 class StatelessUser:
     def __init__(self, user_id, username):
         self.id = user_id
         self.username = username
         self.is_authenticated = True
+
 
 class StatelessJWTAuthentication(JWTAuthentication):
     def get_user(self, validated_token):
