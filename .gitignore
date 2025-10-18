@@ -1,3 +1,7 @@
+public.pem
+private.pem
+
+Makefile
 # Python
 __pycache__/
 *.py[cod]

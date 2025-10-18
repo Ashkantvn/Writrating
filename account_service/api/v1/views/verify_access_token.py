@@ -1,13 +1,7 @@
 from rest_framework.views import APIView
+from api.v1.serializers import VerifyAccessTokenSerializer
 from rest_framework.response import Response
 from rest_framework import status
-from api.v1.serializers import VerifyAccessTokenSerializer
-
-class Logout(APIView):
-    pass
-
-class SignUp(APIView):
-    pass
 
 class VerifyAccessToken(APIView):
     def post(self, request):

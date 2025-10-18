@@ -1,6 +1,7 @@
 from rest_framework import serializers
+from rest_framework_simplejwt.tokens import AccessToken
+from rest_framework_simplejwt.exceptions import TokenError
 from api.models import AccessTokenBlacklist
-from rest_framework_simplejwt.tokens import AccessToken, TokenError
 
 class VerifyAccessTokenSerializer(serializers.Serializer):
     access_token = serializers.CharField()
@@ -21,5 +22,4 @@ class VerifyAccessTokenSerializer(serializers.Serializer):
 
         # If everything is fine, you can attach extra info to attrs
         attrs["jti"] = jti
-        attrs["user_id"] = token.get("user_id")
         return attrs
