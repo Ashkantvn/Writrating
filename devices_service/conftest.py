@@ -35,21 +35,6 @@ def rate(db):
     if rate_obj.pk:
         rate_obj.delete()
 
-
-@pytest.fixture
-def superuser_client(db, django_user_model):
-    user = django_user_model.objects.create_superuser(
-        username="superuser",
-        email="superuser@example.com",
-        password="password"
-    )
-    client = APIClient()
-    client.force_authenticate(user=user)
-    yield client
-    client.logout()
-    if user.pk:
-        user.delete()
-
 @pytest.fixture
 def normal_user_client(db, django_user_model):
     user = django_user_model.objects.create_user(

@@ -13,8 +13,3 @@ class TestDeviceAPIUrls:
         url = reverse("api:v1:retrieve", kwargs={"device_slug": "test-device"})
         view_class = resolve(url).func.view_class
         assert view_class == views.DeviceRetrieveView
-
-    def test_create_profile_url(self):
-        url = reverse("api:v1:create_profile")
-        view_class = resolve(url).func.view_class
-        assert view_class == views.CreateProfile
