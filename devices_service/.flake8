@@ -1,0 +1,21 @@
+[flake8]
+
+# Files/dirs to skip entirely
+exclude =
+    .git,
+    __pycache__,
+    build,
+    dist,
+    .venv,
+    venv,
+    env,
+    node_modules,
+    static,
+    media,
+    */migrations/*,
+    */__init__.py,
+    */email_templates.py,
+    base.py,
+    dev.py,
+    prod.py,
+    manage.py

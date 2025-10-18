@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Profile(models.Model):
     username = models.CharField(unique=True)
     created_at = models.DateTimeField(auto_now_add=True)

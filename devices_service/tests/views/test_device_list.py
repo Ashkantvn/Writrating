@@ -2,6 +2,7 @@ import pytest
 from rest_framework import test, status
 from django.urls import reverse
 
+
 @pytest.mark.django_db
 class TestDeviceListView:
     def setup_method(self):

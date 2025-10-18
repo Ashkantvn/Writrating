@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.core.cache import cache
 
+
 class DeviceListView(APIView):
     def get(self, request):
         cache_key = "device_list"
@@ -17,5 +18,5 @@ class DeviceListView(APIView):
             average_rating=Avg("devicerate__rate__rate_number")
         )
         serializer = DeviceListSerializer(devices, many=True)
-        cache.set(cache_key, {"data": serializer.data}, timeout=60*15)
+        cache.set(cache_key, {"data": serializer.data}, timeout=60 * 15)
         return Response({"data": serializer.data}, status=status.HTTP_200_OK)
