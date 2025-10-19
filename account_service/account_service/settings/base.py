@@ -121,9 +121,6 @@ AUTH_USER_MODEL = "api.CustomUser"
 SIMPLE_JWT = {
     "BLACKLIST_AFTER_ROTATION": True,
     "ROTATE_REFRESH_TOKENS": True,
-}
-
-SIMPLE_JWT = {
     "ALGORITHM": "RS256",
     "SIGNING_KEY": open(BASE_DIR / "private.pem").read(),
     "VERIFYING_KEY": open(BASE_DIR / "public.pem").read(),
