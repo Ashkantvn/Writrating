@@ -7,9 +7,16 @@ from django.db.models import Avg
 from api.v1.serializers import DeviceSerializer, RateSerializer
 from api.models import DeviceRate
 from django.core.cache import cache
-
+from drf_spectacular.utils import extend_schema
 
 class DeviceRetrieveView(APIView):
+    def get_serializer_class(self):
+        if self.request.method == "POST":
+            return RateSerializer
+        if self.request.method == "GET":
+            return DeviceSerializer
+
+    @extend_schema(operation_id='v1_devices_detail')
     def get(self, request, device_slug):
         try:
             device = Device.objects.annotate(
@@ -20,7 +27,7 @@ class DeviceRetrieveView(APIView):
                 data={"detail": "device not found."},
                 status=status.HTTP_404_NOT_FOUND
             )
-        serializer = DeviceSerializer(device)
+        serializer = self.get_serializer_class()(device)
         return Response(data={"data": {"device": serializer.data}})
 
     def post(self, request, device_slug):
@@ -47,7 +54,7 @@ class DeviceRetrieveView(APIView):
 
         # Validate incoming rating data;
         # pass profile in context for serializer usage
-        serializer = RateSerializer(
+        serializer = self.get_serializer_class()(
             data=request.data,
             context={"profile": profile}
         )

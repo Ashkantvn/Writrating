@@ -5,8 +5,10 @@ from rest_framework import status
 
 
 class SignUp(APIView):
+    serializer_class = SignUpSerializer
+    
     def post(self, request):
-        serializer = SignUpSerializer(data=request.data)
+        serializer = self.serializer_class(data=request.data)
         if not serializer.is_valid():
             return Response(
                 data={"detail": serializer.errors["detail"][0]},

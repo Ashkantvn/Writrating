@@ -8,9 +8,10 @@ from api.models import AccessTokenBlacklist
 
 class Logout(APIView):
     permission_classes = [IsAuthenticated]
+    serializer_class = LogoutSerializer
 
     def post(self, request):
-        serializer = LogoutSerializer(data=request.data)
+        serializer = self.serializer_class(data=request.data)
         if not serializer.is_valid():
             return Response(
                 data={"detail": serializer.errors.get("detail")[0]},
