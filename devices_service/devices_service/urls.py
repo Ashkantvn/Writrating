@@ -5,6 +5,7 @@ from drf_spectacular.views import (
     SpectacularSwaggerView,
     SpectacularRedocView,
 )
+import devices_service.spectacular_extensions
 
 urlpatterns = [
     path("devices/admin/", admin.site.urls),

@@ -6,6 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 
 class DeleteAccount(APIView):
     permission_classes = [IsAuthenticated]
+    serializer_class = None
 
     def post(self, request, *args, **kwargs):
         request.user.delete()

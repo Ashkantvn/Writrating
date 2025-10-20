@@ -5,9 +5,11 @@ from rest_framework import status
 
 
 class VerifyAccessToken(APIView):
+    serializer_class = VerifyAccessTokenSerializer
+
     def post(self, request):
         access_token = request.data.get("access_token")
-        serializer = VerifyAccessTokenSerializer(
+        serializer = self.serializer_class(
             data={"access_token": access_token}
         )
         if serializer.is_valid():

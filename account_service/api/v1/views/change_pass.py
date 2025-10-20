@@ -6,8 +6,10 @@ from rest_framework import status
 
 
 class ChangePass(APIView, IsAuthenticated):
+    serializer_class = ChangePasswordSerializer
+
     def post(self, request):
-        serializer = ChangePasswordSerializer(
+        serializer = self.serializer_class(
             instance=request.user,
             data=request.data
         )
