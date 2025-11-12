@@ -15,7 +15,7 @@ Both services communicate securely using **JWT (RS256)** tokens for authenticati
 
 | Category | Technology |
 |-----------|-------------|
-| Framework | Django 5.2.7 |
+| Framework | Django |
 | API | Django REST Framework (DRF) |
 | Auth | SimpleJWT (RS256) |
 | Docs | drf-spectacular |
