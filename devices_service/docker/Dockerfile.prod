@@ -23,6 +23,6 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 COPY . .
 
 # Expose the default Django port
-EXPOSE 8001
+EXPOSE 8000
 
-CMD ["gunicorn", "devices_service.wsgi:application", "--bind", "0.0.0.0:8001", "--workers", "3", "--log-level", "info"]
+CMD ["gunicorn", "devices_service.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3", "--log-level", "info"]
