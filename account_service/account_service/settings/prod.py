@@ -12,4 +12,4 @@ SECURE_HSTS_PRELOAD = True  # Lets site be added to browser lists that always us
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = "static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_ROOT = BASE_DIR / "static"
