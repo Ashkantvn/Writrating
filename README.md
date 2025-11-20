@@ -5,7 +5,7 @@
 This repository contains **two Django REST Framework (DRF)** microservices:
 
 1. **Account Service** — Handles user registration, authentication, and profile management.  
-2. **Device Service** — Manages device ratings, linked to authenticated users.
+2. **Device Service** — Manages digital device ratings, linked to authenticated users.
 
 Both services communicate securely using **JWT (RS256)** tokens for authentication, and the entire environment is managed via **Docker**.
 
