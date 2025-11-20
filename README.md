@@ -14,29 +14,6 @@ Both services authenticate and communicate using **JWT (RS256)** tokens. The rep
 ## 📚 Table of Contents
 
 - [Overview](#-overview)
-- [Tech Stack](#-tech-stack)
-- [Quickstart — Local (venv)](#-quickstart--local-venv)
-- [Quickstart — Docker (development)](#-quickstart--docker-development)
-- [Running Tests](#-running-tests)
-- [Environment / Configuration](#-environment--configuration)
-- [JWT (RS256) Keys](#-jwt-rs256-keys)
-- [API Documentation](#-api-documentation)
-- [Contributing](#-contributing)# 🛠️ Writrating - Account & Device
-
-## 📖 Overview
-
-This repository contains **two Django REST Framework (DRF)** microservices:
-
-1. **Account Service** — Handles user registration, authentication, and profile management.
-2. **Device Service** — Manages device ratings and profiles, linked to authenticated users.
-
-Both services authenticate and communicate using **JWT (RS256)** tokens. The repository includes Docker configs for local development and production-ready images.
-
----
-
-## 📚 Table of Contents
-
-- [Overview](#-overview)
 - [Quickstart — Local (venv)](#-quickstart--local-venv)
 - [Quickstart — Docker (development)](#-quickstart--docker-development)
 - [Running Tests](#-running-tests)
